@@ -5,12 +5,11 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js"
+    "start": "node --env-file=config.env app.js"
   },
   "author": "Group 13",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-handlebars": "^8.0.1",
     "mongodb": "^6.10.0"

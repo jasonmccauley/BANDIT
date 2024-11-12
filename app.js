@@ -2,7 +2,6 @@ import express from "express";
 const app = express();
 import configRoutes from "./routes/index.js";
 import exphbs from "express-handlebars";
-import "dotenv/config";
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   // If the user posts to the server with a property called _method, rewrite the request's method
@@ -32,6 +31,7 @@ app.set("view engine", "handlebars");
 
 configRoutes(app);
 
+// remove this block in the future
 import { dbConnection, closeConnection } from "./config/mongoConnection.js";
 import { tests } from "./config/mongoCollections.js";
 const db = await dbConnection();
