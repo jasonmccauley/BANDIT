@@ -20,4 +20,11 @@ export const createUser = async (username, password) => {
   //return team;
 };
 
+// returns a user object based on the given id
 export const getUserById = async (id) => {};
+
+// returns a user object based on the given username
+export const getUserByUsername = async (username) => {};
+
+// returns if the entered password matches the hashed password for the current user
+export const isPasswordCorrect = async (id, enteredPassword) => {};
