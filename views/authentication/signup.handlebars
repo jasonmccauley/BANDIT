@@ -1,0 +1,25 @@
+<div class="formContainer">
+  <form id="signupForm" action="/users/signup" method="POST">
+    <label for="usernameInput">Enter your username</label>
+    <input id="usernameInput" name="usernameInput" placeholder="username" />
+
+    <label for="passwordInput">Enter your password</label>
+    <input
+      id="passwordInput"
+      name="passwordInput"
+      type="password"
+      placeholder="password"
+    />
+
+    <label for="passwordInput">Reenter your password</label>
+    <input
+      id="reenterPasswordInput"
+      name="reenterPasswordInput"
+      type="password"
+      placeholder="reenter password"
+    />
+    <button type="button" onclick="unhideText()">Show Password</button>
+
+    <input class="submit" type="submit" />
+  </form>
+</div>

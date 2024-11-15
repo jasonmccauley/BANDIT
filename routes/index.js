@@ -1,9 +1,11 @@
 // How to name import: import nameRoutes from "./name.js";
 import { static as staticDir } from "express";
-import mainRoutes from "./mainRoutes.js";
+import mainRoutes from "./main.js";
+import userRoutes from "./users.js";
 
 const constructorMethod = (app) => {
   app.use("/", mainRoutes);
+  app.use("/users", userRoutes);
   app.use("/public", staticDir("public"));
   app.use("*", (req, res) => {
     // change this to redirect or a new "404" page not found screen
