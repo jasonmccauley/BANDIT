@@ -32,20 +32,17 @@ app.use(
   })
 );
 
-app.use("/", (req, res, next) => {
-  console.log(req.session.id);
-  console.log(req.session.user);
-
-  if (!req.session.user && req.path === "/") {
-    return res.redirect("/users/login");
-  }
-  next();
-});
-
 app.engine(
   "handlebars",
   exphbs.engine({
     defaultLayout: "main",
+    helpers: {
+      isValidObject: (input) =>
+        typeof input === "object" &&
+        !Array.isArray(input) &&
+        input !== null &&
+        Object.keys(input).length !== 0,
+    },
   })
 );
 app.set("view engine", "handlebars");

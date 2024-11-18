@@ -13,17 +13,29 @@ router
     }
   })
   .post(async (req, res) => {
-    /*get req.body username and password
-      const { username, password } = req.body;
-      here, you would get the user from the db based on the username, then you would read the hashed pw
-      and then compare it to the pw in the req.body
-      let match = bcrypt.compare(password, 'HASHED_PW_FROM DB');
-      if they match then set req.session.user and then redirect them to the private page
-       I will just do that here */
-    console.log("im here");
-    req.session.user = { firstName: "Patrick", lastName: "Hill", userId: 123 };
+    try {
+      const { usernameInput, passwordInput } = req.body;
 
-    res.redirect("/");
+      let validCredentials = await usersData.isPasswordCorrect(
+        usernameInput,
+        passwordInput
+      );
+
+      if (validCredentials) {
+        let currentUser = usersData.getUserByUsername(usernameInput);
+        req.session.user = {
+          username: currentUser["username"],
+          id: currentUser["_id"],
+        };
+        res.redirect("/");
+      } else {
+        throw new Error("Invalid Credentials");
+      }
+    } catch (e) {
+      res
+        .status(404)
+        .render("authentication/login", { error: "Invalid Credentials" });
+    }
   });
 
 router.get("/logout", async (req, res) => {
@@ -37,22 +49,25 @@ router
     try {
       res.render("authentication/signup", {});
     } catch (e) {
-      res.status(500).json({ error: e });
+      res.status(500).render("authentication/error");
     }
   })
   .post(async (req, res) => {
-    const { usernameInput, passwordInput } = req.body;
-    /*get req.body username and password
-      const { username, password } = req.body;
-      here, you would get the user from the db based on the username, then you would read the hashed pw
-      and then compare it to the pw in the req.body
-      let match = bcrypt.compare(password, 'HASHED_PW_FROM DB');
-      if they match then set req.session.user and then redirect them to the private page
-       I will just do that here */
-    console.log("signing up");
+    try {
+      const { usernameInput, passwordInput } = req.body;
 
-    //req.session.user = { firstName: "Patrick", lastName: "Hill", userId: 123 };
-    res.json(await usersData.createUser(usernameInput, passwordInput));
+      let createdUser = await usersData.createUser(
+        usernameInput,
+        passwordInput
+      );
+      req.session.user = {
+        username: createdUser["username"],
+        id: createdUser["_id"],
+      };
+      res.redirect("/");
+    } catch (e) {
+      res.status(400).render("authentication/signup", { error: e.message });
+    }
   });
 
 export default router;

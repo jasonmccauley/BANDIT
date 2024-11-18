@@ -1,4 +1,7 @@
 <div class="formContainer">
+  {{#if error}}
+    <p>Error: {{error}}</p>
+  {{/if}}
   <form id="signupForm" action="/users/signup" method="POST">
     <label for="usernameInput">Enter your username</label>
     <input id="usernameInput" name="usernameInput" placeholder="username" />

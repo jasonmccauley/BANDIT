@@ -8,6 +8,12 @@
   <body>
     <main>
       <h1>You should always see this</h1>
+      {{#if (isValidObject user)}}
+        <p>you will only see this when logged in</p>
+      {{else}}
+        <button>Login</button>
+        <button>Sign Up</button>
+      {{/if}}
       {{{body}}}
     </main>
     <script src="/public/js/unhideText.js"></script>
