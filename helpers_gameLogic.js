@@ -2,8 +2,11 @@ const word_is_valid = (word, dictionary) => {
   return dictionary.includes(word);
 };
 
-const construct_word = (query_word, open_tiles, existing_words) => {
+const construct_word = (query_word, center_tiles, existing_words) => {
+  // eligible_words consists of formed words and center tiles that contain only letters in the query_word
   let eligible_words = [];
+
+  // Add formed words to eligible_words
   for (const word of existing_words) {
     let word_is_valid = true;
     let letters_in_this_word = word.split("");
@@ -18,8 +21,10 @@ const construct_word = (query_word, open_tiles, existing_words) => {
     if (word_is_valid) eligible_words.push(word);
   }
 
-  // Check if the word can be made only by stealing existing words.
-  let query_word_letters = query_word.split("");
+  // Add center tiles to eligible_words
+  for (const letter of center_tiles) {
+    if (query_word.includes(letter)) eligible_words.push(letter);
+  }
 
   // Recursive function to find words combination
   const recur_find_words = (remainingLetters, words, selectedWords) => {
@@ -54,9 +59,7 @@ const construct_word = (query_word, open_tiles, existing_words) => {
         );
 
         // If a combination is found, return the words that make it up.
-        if (result) {
-          return result;
-        }
+        if (result) return result;
       }
     }
 
@@ -64,9 +67,8 @@ const construct_word = (query_word, open_tiles, existing_words) => {
     return null;
   };
 
-  let result = recur_find_words(query_word_letters, eligible_words, []);
+  // NOTE: This algorithm should correctly prioritize stealing words because center tiles are placed at the end of the eligible_words array
 
-  // Check if the word can be made with center tiles and by stealing an existing word.
-
-  // Check if the word can be made only with center tiles.
+  query_word_letters = query_word.split("");
+  return recur_find_words(query_word_letters, eligible_words, []);
 };
