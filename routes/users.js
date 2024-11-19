@@ -7,7 +7,7 @@ router
   .route("/login")
   .get(async (req, res) => {
     try {
-      res.render("authentication/login", {});
+      res.render("authentication/login", { account: true });
     } catch (e) {
       res.status(500).json({ error: e });
     }
@@ -22,7 +22,7 @@ router
       );
 
       if (validCredentials) {
-        let currentUser = usersData.getUserByUsername(usernameInput);
+        let currentUser = await usersData.getUserByUsername(usernameInput);
         req.session.user = {
           username: currentUser["username"],
           id: currentUser["_id"],
@@ -32,9 +32,10 @@ router
         throw new Error("Invalid Credentials");
       }
     } catch (e) {
-      res
-        .status(404)
-        .render("authentication/login", { error: "Invalid Credentials" });
+      res.status(404).render("authentication/login", {
+        error: "Invalid Credentials",
+        account: true,
+      });
     }
   });
 
@@ -47,9 +48,9 @@ router
   .route("/signup")
   .get(async (req, res) => {
     try {
-      res.render("authentication/signup", {});
+      res.render("authentication/signup", { account: true });
     } catch (e) {
-      res.status(500).render("authentication/error");
+      res.status(500).render("authentication/error", { account: true });
     }
   })
   .post(async (req, res) => {
@@ -66,7 +67,9 @@ router
       };
       res.redirect("/");
     } catch (e) {
-      res.status(400).render("authentication/signup", { error: e.message });
+      res
+        .status(400)
+        .render("authentication/signup", { error: e.message, account: true });
     }
   });
 

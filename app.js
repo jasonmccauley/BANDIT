@@ -47,6 +47,15 @@ app.engine(
 );
 app.set("view engine", "handlebars");
 
+// prevents user from going to login/signup page if they are already logged in
+app.use("/users", (req, res, next) => {
+  if (req.session.user && (req.path === "/login" || req.path === "/signup")) {
+    return res.redirect("/");
+  } else {
+    next();
+  }
+});
+
 configRoutes(app);
 
 // remove this block in the future

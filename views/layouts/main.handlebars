@@ -11,8 +11,10 @@
       {{#if (isValidObject user)}}
         <p>you will only see this when logged in</p>
       {{else}}
-        <button>Login</button>
-        <button>Sign Up</button>
+        {{#if account}}{{else}}
+          <a href="/users/login">Login</a>
+          <a href="/users/signup">Sign Up</a>
+        {{/if}}
       {{/if}}
       {{{body}}}
     </main>
