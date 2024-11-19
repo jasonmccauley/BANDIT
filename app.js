@@ -1,8 +1,9 @@
 import express from "express";
-const app = express();
 import configRoutes from "./routes/index.js";
 import exphbs from "express-handlebars";
 import session from "express-session";
+import http from "http";
+import { Server } from "socket.io";
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   // If the user posts to the server with a property called _method, rewrite the request's method
@@ -16,6 +17,10 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   // let the next middleware run:
   next();
 };
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
 app.use("/public", express.static("public"));
 app.use(express.json());
@@ -56,6 +61,22 @@ app.use("/users", (req, res, next) => {
   }
 });
 
+// prevents user from going to games page if they are not logged in
+app.use("/game", (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  } else {
+    next();
+  }
+});
+
+io.on("connection", (socket) => {
+  console.log("a player connected");
+  socket.on("test", (e) => {
+    console.log("testing");
+  });
+});
+
 configRoutes(app);
 
 // remove this block in the future
@@ -66,7 +87,7 @@ const testCollection = await tests();
 const insertInfo = await testCollection.insertOne({ test: 2 });
 await closeConnection();*/
 
-app.listen(3000, () => {
+server.listen(3000, () => {
   console.log("We've now got a server!");
   console.log("Your routes will be running on http://localhost:3000");
 });

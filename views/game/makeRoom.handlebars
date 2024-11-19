@@ -1,0 +1,19 @@
+<div class="formContainer">
+  {{#if error}}
+    <p>Error: {{error}}</p>
+  {{/if}}
+  <form id="roomForm" action="/game/search" method="POST">
+    <label for="passcode">Enter a passcode to join users with (optional)</label>
+    <input id="passcode" name="passcode" placeholder="passcode" />
+
+    <label for="roomSize">Max number of players in game </label>
+    <select id="roomSize" name="number">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+
+    <input class="submit" type="submit" value="Search for players!" />
+  </form>
+</div>
