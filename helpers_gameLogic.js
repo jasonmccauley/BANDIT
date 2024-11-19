@@ -6,8 +6,6 @@ const construct_word = (query_word, center_tiles, existing_words) => {
   // eligible_words consists of formed words and center tiles that contain only letters in the query_word
   let eligible_words = [];
 
-  "hotdog" "hot" "dog"
-
   // Add formed words to eligible_words
   for (const word of existing_words) {
     let word_is_valid = true;
