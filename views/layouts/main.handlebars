@@ -9,7 +9,7 @@
     <main>
       <h1>You should always see this</h1>
       {{#if (isValidObject user)}}
-        <p>you will only see this when logged in</p>
+        <p>Hello, {{user.username}}</p>
       {{else}}
         {{#if account}}{{else}}
           <a href="/users/login">Login</a>
