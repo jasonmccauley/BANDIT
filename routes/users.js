@@ -73,4 +73,12 @@ router
     }
   });
 
+router.route("/:userId").get(async (req, res) => {
+  try {
+    let user = await usersData.getUserById(req.params.userId);
+    res.render("profile", { foundUser: user });
+  } catch (e) {
+    res.status(404).json({ error: e.message });
+  }
+});
 export default router;
