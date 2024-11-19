@@ -6,12 +6,14 @@ const construct_word = (query_word, center_tiles, existing_words) => {
   // eligible_words consists of formed words and center tiles that contain only letters in the query_word
   let eligible_words = [];
 
+  "hotdog" "hot" "dog"
+
   // Add formed words to eligible_words
   for (const word of existing_words) {
     let word_is_valid = true;
-    let letters_in_this_word = word.split("");
-    for (const letter of letters_in_this_word) {
-      if (query_word.includes(letter)) {
+    let letters_in_this_word = query_word.split("");
+    for (const letter of word) {
+      if (letters_in_this_word.contains(letter)) {
         letters_in_this_word.remove(letter);
       } else {
         word_is_valid = false;
