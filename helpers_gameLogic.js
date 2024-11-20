@@ -2,13 +2,16 @@ const word_is_valid = (word, dictionary) => {
   return dictionary.includes(word);
 };
 
-const construct_word = (query_word, open_tiles, existing_words) => {
+const construct_word = (query_word, center_tiles, existing_words) => {
+  // eligible_words consists of formed words and center tiles that contain only letters in the query_word
   let eligible_words = [];
+
+  // Add formed words to eligible_words
   for (const word of existing_words) {
     let word_is_valid = true;
-    let letters_in_this_word = word.split("");
-    for (const letter of letters_in_this_word) {
-      if (query_word.includes(letter)) {
+    let letters_in_this_word = query_word.split("");
+    for (const letter of word) {
+      if (letters_in_this_word.contains(letter)) {
         letters_in_this_word.remove(letter);
       } else {
         word_is_valid = false;
@@ -18,16 +21,19 @@ const construct_word = (query_word, open_tiles, existing_words) => {
     if (word_is_valid) eligible_words.push(word);
   }
 
-  // Check if the word can be made only by stealing existing words.
-  let query_word_letters = query_word.split("");
+  // Add center tiles to eligible_words
+  for (const letter of center_tiles) {
+    if (query_word.includes(letter)) eligible_words.push(letter);
+  }
 
   // Recursive function to find words combination
-  const recur_find_words = (remainingLetters, words, selectedWords = []) => {
+  const recur_find_words = (remainingLetters, words, selectedWords) => {
     // Base case: if no letters remain, a solution is found, return selected words
     if (remainingLetters.length === 0) return selectedWords;
 
     // Try each word in words to see if it helps match remaining letters
     for (let i = 0; i < words.length; i++) {
+      let wordWorks = true;
       let word = words[i];
       let tempRemainingLetters = remainingLetters.slice();
 
@@ -36,8 +42,11 @@ const construct_word = (query_word, open_tiles, existing_words) => {
         let index = tempRemainingLetters.indexOf(letter);
         if (index !== -1) {
           tempRemainingLetters.splice(index, 1);
-        }
+        } else wordWorks = false;
       }
+
+      // If this word doesn't work with the remaining letters, move to the next word.
+      if (!wordWorks) continue;
 
       // Check if the remaining letters were covered by including this word
       if (tempRemainingLetters.length < remainingLetters.length) {
@@ -49,19 +58,17 @@ const construct_word = (query_word, open_tiles, existing_words) => {
           selectedWords.concat(word)
         );
 
-        if (result) {
-          return result;
-        }
+        // If a combination is found, return the words that make it up.
+        if (result) return result;
       }
     }
 
-    // If no combination could match, return null
+    // If this combination is a dead end, return null
     return null;
   };
 
-  let result = recur_find_words(query_word_letters, existing_words);
+  // NOTE: This algorithm should correctly prioritize stealing words because center tiles are placed at the end of the eligible_words array
 
-  // Check if the word can be made with center tiles and by stealing an existing word.
-
-  // Check if the word can be made only with center tiles.
+  query_word_letters = query_word.split("");
+  return recur_find_words(query_word_letters, eligible_words, []);
 };
