@@ -17,6 +17,11 @@
         {{/if}}
       {{/if}}
       {{{body}}}
+      {{#if account}}{{else}}
+        {{#if game}}{{else}}
+          <a href="/game">Start playing now!</a>
+        {{/if}}
+      {{/if}}
     </main>
     <script src="/public/js/unhideText.js"></script>
   </body>

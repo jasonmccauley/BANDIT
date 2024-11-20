@@ -2,7 +2,8 @@
   {{#if error}}
     <p>Error: {{error}}</p>
   {{/if}}
-  <form id="roomForm" action="/game/search" method="POST">
+  <form id="roomForm">
+    <input id="username" value={{user.username}} type="hidden" />
     <label for="passcode">Enter a passcode to join users with (optional)</label>
     <input id="passcode" name="passcode" placeholder="passcode" />
 
@@ -16,4 +17,11 @@
 
     <input class="submit" type="submit" value="Search for players!" />
   </form>
+
+  <p id="roomStatus" display="none"></p>
+  <p id="playerNumber" display="none"></p>
+
+  <button id="startButton" display="none">Start the game!</button>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/public/js/searchRoom.js"></script>
 </div>

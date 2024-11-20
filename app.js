@@ -70,10 +70,34 @@ app.use("/game", (req, res, next) => {
   }
 });
 
+// stores game state for all games
+const games = {};
+
 io.on("connection", (socket) => {
-  console.log("a player connected");
-  socket.on("test", (e) => {
-    console.log("testing");
+  // this runs when client-side js does "socket.emit("joinRoom")
+  socket.on("joinRoom", (response) => {
+    const { passcode, roomSize, username } = response;
+
+    console.log("data received:" + [passcode, roomSize, username]);
+
+    // socket.join acts as a socket room
+    socket.join(passcode);
+
+    if (!games[passcode]) {
+      games[passcode] = {
+        tiles: [],
+        words: [],
+        players: [],
+        roomSize: roomSize,
+        currentPlayer: 0,
+        canJoin: true,
+      };
+    }
+    const game = games[passcode];
+    game["players"].push(username);
+
+    // for room "passcode" only, send "game" to the client-side js
+    io.to(passcode).emit("joinRoom", game);
   });
 });
 
