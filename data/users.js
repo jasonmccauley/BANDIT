@@ -74,6 +74,7 @@ export const getUserByUsername = async (username) => {
   validation.doesExist(username);
   username = validation.isProperString(username);
 
+  username = username.toLowerCase();
   const userCollection = await users();
   const user = await userCollection.findOne({
     username: username,
@@ -101,4 +102,28 @@ export const isPasswordCorrect = async (username, enteredPassword) => {
   );
 
   return doesMatch;
+};
+
+//checks updated bio and DOB for user and updates it in the DB
+export const updateUserProfile = async (id, newBio, newDateOfBirth) => {
+  validation.doesExist(id);
+  id = validation.isProperString(id);
+  id = validation.isValidObjectId(id);
+  validation.doesExist(newBio);
+  newBio = validation.isProperString(newBio);
+
+  if (!newDateOfBirth || isNaN(new Date(newDateOfBirth).getTime())) {
+    throw new Error("Invalid date of birth: Must be a valid date.");
+  }
+
+  const userCollection = await users();
+  const updatedInfo = await userCollection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { bio: newBio, dateOfBirth: newDateOfBirth } }
+  );
+  if (updatedInfo.modifiedCount === 0) {
+    throw new Error("Could not update the profile. Please try again.");
+  }
+  const updatedUser = await userCollection.findOne({ _id: new ObjectId(id) });
+  return updatedUser;
 };

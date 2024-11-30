@@ -7,14 +7,25 @@
   </head>
   <body>
     <main>
+      <nav>
+        <div class="nav-left">
+        {{#if (isValidObject user)}}
+        <a href="/game" class="nav-link">Start Playing Now</a>
+        {{else}}
+        <a href="/users/login" class="nav-link">Login</a>
+        <a href="/users/signup" class="nav-link">Sign Up</a>
+        {{/if}}
+        </div>
+        <div class="nav-right">
+          {{#if (isValidObject user)}}
+          <a href="/users/{{user.id}}" class="nav-link profile-button">User Profile</a>
+          <a href="/users/logout" class="nav-link logout-button">Logout</a>
+        </div>
+        {{/if}}
+      </nav>
       <h1>You should always see this</h1>
       {{#if (isValidObject user)}}
         <p>Hello, {{user.username}}</p>
-      {{else}}
-        {{#if account}}{{else}}
-          <a href="/users/login">Login</a>
-          <a href="/users/signup">Sign Up</a>
-        {{/if}}
       {{/if}}
       {{{body}}}
       {{#if account}}{{else}}
