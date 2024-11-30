@@ -91,6 +91,7 @@ io.on("connection", (socket) => {
         roomSize: roomSize,
         currentPlayer: 0,
         canJoin: true,
+        passcode: passcode,
       };
     }
     const game = games[passcode];
@@ -98,6 +99,19 @@ io.on("connection", (socket) => {
 
     // for room "passcode" only, send "game" to the client-side js
     io.to(passcode).emit("joinRoom", game);
+  });
+
+  // when the game is started, everyone in the lobby navigates to /game/:gameId
+  socket.on("startGame", (passcode) => {
+    io.to(passcode).emit("navigateToGame");
+  });
+
+  // reconnects players on page navigation
+  socket.on("resyncRoom", (passcode) => {
+    if (games.hasOwnProperty(passcode)) {
+      socket.join(passcode);
+      io.to(passcode).emit("resyncRoom");
+    }
   });
 });
 

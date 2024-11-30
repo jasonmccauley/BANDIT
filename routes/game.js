@@ -10,4 +10,16 @@ router.route("/").get(async (req, res) => {
   }
 });
 
+router.route("/:gameId").get(async (req, res) => {
+  try {
+    res.render("game/game", {
+      user: req.session.user,
+      game: true,
+      gameId: req.params.gameId,
+    });
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+});
+
 export default router;

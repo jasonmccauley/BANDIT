@@ -1,9 +1,11 @@
 // this is client-side code to join a room to play the game
 const socket = io();
 
-let passcode, roomSize, username, roomForm;
+let passcode, roomSize, username, roomForm, startButton;
 
 roomForm = document.getElementById("roomForm");
+startButton = document.getElementById("startButton");
+
 // checks if the roomForm is submitted
 roomForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -37,11 +39,9 @@ socket.on("joinRoom", (game) => {
       game["players"].indexOf(username) + 1
     }`;
 
-    if (game["players"].length === 1) {
-      let startButton = document.getElementById("startButton");
-      startButton.style.display = "block";
-      roomForm.style.display = "none";
-    }
+    startButton.style.display = "block";
+    startButton.href = `/game/${game["passcode"]}`;
+    roomForm.style.display = "none";
   } else {
     console.log("error, socket did not send correct value");
   }

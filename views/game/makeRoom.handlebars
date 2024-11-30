@@ -2,26 +2,29 @@
   {{#if error}}
     <p>Error: {{error}}</p>
   {{/if}}
-  <form id="roomForm">
-    <input id="username" value={{user.username}} type="hidden" />
-    <label for="passcode">Enter a passcode to join users with (optional)</label>
-    <input id="passcode" name="passcode" placeholder="passcode" />
+  <div>
+    <form id="roomForm">
+      <input id="username" value={{user.username}} type="hidden" />
+      <label for="passcode">Enter a passcode to join users with (optional)</label>
+      <input id="passcode" name="passcode" placeholder="passcode" />
 
-    <label for="roomSize">Max number of players in game </label>
-    <select id="roomSize" name="number">
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-    </select>
+      <label for="roomSize">Max number of players in game </label>
+      <select id="roomSize" name="number">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
 
-    <input class="submit" type="submit" value="Search for players!" />
-  </form>
+      <input class="submit" type="submit" value="Search for players!" />
+    </form>
 
-  <p id="roomStatus" display="none"></p>
-  <p id="playerNumber" display="none"></p>
+    <p id="roomStatus" display="none"></p>
+    <p id="playerNumber" display="none"></p>
 
-  <button id="startButton" display="none">Start the game!</button>
+    <a id="startButton"> Start the game!</a>
+  </div>
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="/public/js/searchRoom.js"></script>
 </div>

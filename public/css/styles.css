@@ -7,7 +7,7 @@ form {
 
 /* General Styling */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   background-color: #f4f4f9;
   color: #333;
   margin: 0;
@@ -33,7 +33,7 @@ button {
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
-  background: #4CAF50;
+  background: #4caf50;
   color: #fff;
   font-size: 16px;
   cursor: pointer;
@@ -47,7 +47,7 @@ button:hover {
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
-  background: #007BFF;
+  background: #007bff;
   color: #fff;
   font-size: 16px;
   cursor: pointer;
@@ -83,7 +83,7 @@ label {
 }
 
 a {
-  color: #007BFF;
+  color: #007bff;
   text-decoration: none;
   margin: 0 10px;
 }
@@ -101,7 +101,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #007BFF;
+  background: #007bff;
   padding: 10px 20px;
   border-radius: 5px;
   margin-bottom: 20px;
@@ -223,7 +223,7 @@ nav {
 .edit-button {
   margin-top: 15px;
   padding: 10px 20px;
-  background: #007BFF;
+  background: #007bff;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -232,4 +232,8 @@ nav {
 
 .edit-button:hover {
   background: #0056b3;
+}
+
+#gameId {
+  display: none;
 }
