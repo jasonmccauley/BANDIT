@@ -80,7 +80,6 @@ io.on("connection", (socket) => {
 
     console.log("data received:" + [passcode, roomSize, username]);
 
-    // socket.join acts as a socket room
     socket.join(passcode);
 
     if (!games[passcode]) {
@@ -103,14 +102,24 @@ io.on("connection", (socket) => {
 
   // when the game is started, everyone in the lobby navigates to /game/:gameId
   socket.on("startGame", (passcode) => {
-    io.to(passcode).emit("navigateToGame");
+    io.to(passcode).emit("navigateToGame", passcode);
   });
 
-  // reconnects players on page navigation
-  socket.on("resyncRoom", (passcode) => {
+  // navigates all players to new page
+  socket.on("navigateToGame", (passcode) => {
     if (games.hasOwnProperty(passcode)) {
+      io.to(passcode).emit("navigateToGame", passcode);
+    }
+  });
+
+  // needed to resync players after something like a page change
+  socket.on("resync", (passcode) => {
+    console.log("attempting a resync");
+
+    if (games.hasOwnProperty(passcode)) {
+      // after page navigation, the room is deleted from the socket and needs to be recreated
       socket.join(passcode);
-      io.to(passcode).emit("resyncRoom");
+      io.to(passcode).emit("resync", games[passcode]);
     }
   });
 });
