@@ -1,7 +1,7 @@
 // this is client-side code to join a room to play the game
 const socket = io();
 
-let passcode, roomSize, username, roomForm, startButton;
+let passcode, username, roomForm, startButton;
 let gameState;
 
 roomForm = document.getElementById("roomForm");
@@ -13,15 +13,13 @@ roomForm.addEventListener("submit", (event) => {
 
   // currently this is the info we want to store
   passcode = document.getElementById("passcode").value;
-  roomSize = document.getElementById("roomSize").value;
   username = document.getElementById("username").value;
 
-  console.log(passcode + " " + roomSize + " " + username);
+  console.log(passcode + " " + username);
 
   // send data to the backend
   socket.emit("joinRoom", {
     passcode: passcode,
-    roomSize: roomSize,
     username: username,
   });
 });
@@ -40,20 +38,28 @@ startButton.addEventListener("click", () => {
 socket.on("joinRoom", (game) => {
   if (game) {
     console.log(game);
-    gameState = game;
-    let roomStatus = document.getElementById("roomStatus");
-    roomStatus.style.display = "block";
-    roomStatus.innerHTML = `Room capacity: ${game["players"].length}/${game["roomSize"]}`;
 
-    let playerNumber = document.getElementById("playerNumber");
-    playerNumber.style.display = "block";
-    playerNumber.innerHTML = `You are player number ${
-      game["players"].indexOf(username) + 1
-    }`;
+    if (game["players"].length < game["roomSize"]) {
+      gameState = game;
+      let roomStatus = document.getElementById("roomStatus");
+      roomStatus.style.display = "block";
+      roomStatus.innerHTML = `Room capacity: ${game["players"].length}/${game["roomSize"]}`;
 
-    startButton.style.display = "block";
-    startButton.href = `/game/${game["passcode"]}`;
-    roomForm.style.display = "none";
+      let playerNumber = document.getElementById("playerNumber");
+      playerNumber.style.display = "block";
+      playerNumber.innerHTML = `You are player number ${
+        game["players"].indexOf(socket.id) + 1
+      }`;
+
+      startButton.style.display = "block";
+      startButton.href = `/game/${game["passcode"]}`;
+      roomForm.style.display = "none";
+
+      window.isConnected = true;
+    } else {
+      alert("Room is full, please enter another code");
+      roomForm.reset();
+    }
   } else {
     console.log("error, socket did not send correct value");
   }
@@ -65,4 +71,17 @@ socket.on("navigateToGame", (passcode) => {
   if (passcode) {
     window.location.href = `/game/${passcode}`;
   }
+});
+
+// updates player count if someone disconnects
+socket.on("refreshPlayerCount", (game) => {
+  gameState = game;
+  let roomStatus = document.getElementById("roomStatus");
+  roomStatus.innerHTML = `Room capacity: ${game["players"].length}/${game["roomSize"]}`;
+
+  let playerNumber = document.getElementById("playerNumber");
+  playerNumber.innerHTML = `You are player number ${
+    game["players"].indexOf(socket.id) + 1
+  }`;
+  console.log(game);
 });

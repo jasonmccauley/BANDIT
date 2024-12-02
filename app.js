@@ -33,7 +33,7 @@ app.use(
     secret: "super duper secret, change this later",
     saveUninitialized: false,
     resave: false,
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 3600000 },
   })
 );
 
@@ -73,12 +73,15 @@ app.use("/game", (req, res, next) => {
 // stores game state for all games
 const games = {};
 
+// stores each socket id (user) and which room they are part of. This makes it easier to remove a player from a lobby if they disconnect
+const socketRooms = {};
+
 io.on("connection", (socket) => {
   // this runs when client-side js does "socket.emit("joinRoom")
   socket.on("joinRoom", (response) => {
-    const { passcode, roomSize, username } = response;
+    const { passcode, username } = response;
 
-    console.log("data received:" + [passcode, roomSize, username]);
+    console.log("data received:" + [passcode, username]);
 
     socket.join(passcode);
 
@@ -86,15 +89,20 @@ io.on("connection", (socket) => {
       games[passcode] = {
         tiles: [],
         words: [],
-        players: [],
-        roomSize: roomSize,
+        players: Array.from(io.sockets.adapter.rooms.get(passcode)),
+        roomSize: 5,
         currentPlayer: 0,
         canJoin: true,
         passcode: passcode,
       };
+    } else {
+      games[passcode]["players"] = Array.from(
+        io.sockets.adapter.rooms.get(passcode)
+      );
     }
     const game = games[passcode];
-    game["players"].push(username);
+
+    socketRooms[socket.id] = passcode;
 
     // for room "passcode" only, send "game" to the client-side js
     io.to(passcode).emit("joinRoom", game);
@@ -120,6 +128,22 @@ io.on("connection", (socket) => {
       // after page navigation, the room is deleted from the socket and needs to be recreated
       socket.join(passcode);
       io.to(passcode).emit("resync", games[passcode]);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`Client disconnected: ${socket.id}`);
+    if (Object.keys(games).length > 0) {
+      if (io.sockets.adapter.rooms.get(socketRooms[socket.id])) {
+        games[socketRooms[socket.id]]["players"] = Array.from(
+          io.sockets.adapter.rooms.get(socketRooms[socket.id])
+        );
+        io.to(socketRooms[socket.id]).emit(
+          "refreshPlayerCount",
+          games[socketRooms[socket.id]]
+        );
+      }
+      delete socketRooms[socket.id];
     }
   });
 });
