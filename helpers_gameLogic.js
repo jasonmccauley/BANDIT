@@ -2,6 +2,14 @@ const word_is_valid = (word, dictionary) => {
   return dictionary.includes(word);
 };
 
+/**
+ * Processes a query word submitted by a player.
+ *
+ * @param {string} query_word
+ * @param {Array<string>} center_tiles
+ * @param {Array<string>} existing_words
+ * @returns {Array<string>} - A list of words that can be used to construct the query word.
+ */
 const construct_word = (query_word, center_tiles, existing_words) => {
   // eligible_words consists of formed words and center tiles that contain only letters in the query_word
   let eligible_words = [];
