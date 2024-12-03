@@ -158,6 +158,11 @@ const testCollection = await tests();
 const insertInfo = await testCollection.insertOne({ test: 2 });
 await closeConnection();*/
 
+import { initialize_letter_deck } from "./game/gamestateModel.js";
+import { bananagrams_deck } from "./game/letterDeck.js";
+
+console.log(initialize_letter_deck(bananagrams_deck));
+
 server.listen(3000, () => {
   console.log("We've now got a server!");
   console.log("Your routes will be running on http://localhost:3000");
