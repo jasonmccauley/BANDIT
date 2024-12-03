@@ -19,6 +19,7 @@ export class SingleGamestate {
         this.table_tiles = [];
         this.player_words = [];
 
+        // take a tile from the deck and add it to the table
         this.draw = () => {
             let new_tile = this.deck.pop();
             this.table_tiles.push(new_tile);
@@ -26,6 +27,8 @@ export class SingleGamestate {
             console.log(new_tile);
         };
 
+        // apply the word finding function to verify a guessed word
+        // if it is correct, remove pertinent table tiles or words and add new word
         this.guess = (word) => {
             let result = construct_word(word, this.table_tiles, this.player_words);
 
@@ -48,6 +51,8 @@ export class SingleGamestate {
         return shuffle(deck);
     }
 
+    // traverse a file of word entries to make word dictionary
+    // note: filters out any words less than 3 letters
     static initialize_dictionary(file) {
         const data = fs.readFileSync(file, 'utf-8');
 
