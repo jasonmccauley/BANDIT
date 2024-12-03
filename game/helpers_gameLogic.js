@@ -10,7 +10,7 @@ const word_is_valid = (word, dictionary) => {
  * @param {Array<string>} existing_words
  * @returns {Array<string>} - A list of words that can be used to construct the query word.
  */
-const construct_word = (query_word, center_tiles, existing_words) => {
+export const construct_word = (query_word, center_tiles, existing_words) => {
   // eligible_words consists of formed words and center tiles that contain only letters in the query_word
   let eligible_words = [];
 
@@ -19,8 +19,9 @@ const construct_word = (query_word, center_tiles, existing_words) => {
     let word_is_valid = true;
     let letters_in_this_word = query_word.split("");
     for (const letter of word) {
-      if (letters_in_this_word.contains(letter)) {
-        letters_in_this_word.remove(letter);
+      let index = letters_in_this_word.indexOf(letter);
+      if (index !== -1) {
+        letters_in_this_word.splice(index, 1);
       } else {
         word_is_valid = false;
         break;
