@@ -158,6 +158,10 @@ const testCollection = await tests();
 const insertInfo = await testCollection.insertOne({ test: 2 });
 await closeConnection();*/
 
+import { SingleGamestate } from './game/gamestateModel.js';
+
+let state = new SingleGamestate();
+
 server.listen(3000, () => {
   console.log("We've now got a server!");
   console.log("Your routes will be running on http://localhost:3000");
