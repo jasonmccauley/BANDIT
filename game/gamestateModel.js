@@ -57,6 +57,6 @@ export class SingleGamestate {
         const data = fs.readFileSync(file, 'utf-8');
 
         let dict = data.split('\n');
-        return dict.filter(x => x.length >= 3);
+        return dict.filter(x => x.length > 3);
     }
 }
