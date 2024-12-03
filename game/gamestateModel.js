@@ -1,3 +1,7 @@
+import fs from 'node:fs';
+import { bananagrams_deck } from "./letterDeck.js";
+import { construct_word } from "./helpers_gameLogic.js";
+
 // reverse fisher-yates shuffle
 const shuffle = (deck) => {
     for (let i = deck.length - 1; i > 0; i--) {
@@ -8,12 +12,46 @@ const shuffle = (deck) => {
     return deck;
 }
 
-// generate a randomly ordered list of letter tiles to start the game
-export const initialize_letter_deck = (deck_model) => {
-    let deck = [];
-    for (const tile in deck_model) {
-        deck = deck.concat(Array(deck_model[tile]).fill(tile))
+export class SingleGamestate {
+    constructor() {
+        this.deck = SingleGamestate.initialize_letter_deck(bananagrams_deck);
+        this.dictionary = SingleGamestate.initialize_dictionary('./scrabble.txt');
+        this.table_tiles = [];
+        this.player_words = [];
+
+        this.draw = () => {
+            let new_tile = this.deck.pop();
+            this.table_tiles.push(new_tile);
+
+            console.log(new_tile);
+        };
+
+        this.guess = (word) => {
+            let result = construct_word(word, this.table_tiles, this.player_words);
+
+            if (result === null) return;
+
+            for (const tile of result) {
+                this.table_tiles.splice(this.table_tiles.indexOf(tile), 1);
+            }
+            this.player_words.push(word);
+        }
     }
 
-    return shuffle(deck);
+    // generate a randomly ordered list of letter tiles to start the game
+    static initialize_letter_deck(deck_model) {
+        let deck = [];
+        for (const tile in deck_model) {
+            deck = deck.concat(Array(deck_model[tile]).fill(tile))
+        }
+    
+        return shuffle(deck);
+    }
+
+    static initialize_dictionary(file) {
+        const data = fs.readFileSync(file, 'utf-8');
+
+        let dict = data.split('\n');
+        return dict.filter(x => x.length > 3);
+    }
 }

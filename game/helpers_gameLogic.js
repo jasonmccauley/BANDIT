@@ -1,8 +1,8 @@
 const word_is_valid = (word, dictionary) => {
-  return dictionary.includes(word);
+  return dictionary.includes(word.toUpperCase());
 };
 
-const construct_word = (query_word, center_tiles, existing_words) => {
+export const construct_word = (query_word, center_tiles, existing_words) => {
   // eligible_words consists of formed words and center tiles that contain only letters in the query_word
   let eligible_words = [];
 
@@ -69,6 +69,6 @@ const construct_word = (query_word, center_tiles, existing_words) => {
 
   // NOTE: This algorithm should correctly prioritize stealing words because center tiles are placed at the end of the eligible_words array
 
-  query_word_letters = query_word.split("");
+  let query_word_letters = query_word.split("");
   return recur_find_words(query_word_letters, eligible_words, []);
 };

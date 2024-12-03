@@ -158,10 +158,9 @@ const testCollection = await tests();
 const insertInfo = await testCollection.insertOne({ test: 2 });
 await closeConnection();*/
 
-import { initialize_letter_deck } from "./game/gamestateModel.js";
-import { bananagrams_deck } from "./game/letterDeck.js";
+import { SingleGamestate } from './game/gamestateModel.js';
 
-console.log(initialize_letter_deck(bananagrams_deck));
+let state = new SingleGamestate();
 
 server.listen(3000, () => {
   console.log("We've now got a server!");
