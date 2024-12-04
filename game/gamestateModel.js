@@ -66,6 +66,15 @@ export class SingleGamestate {
         };
     }
 
+    /**
+     *
+     * @returns {boolean} Is the game concluded?
+     */
+    game_is_concluded() {
+        if (this.deck.length === 0) return true;
+        return false;
+    }
+
     // generate a randomly ordered list of letter tiles to start the game
     static initialize_letter_deck(deck_model) {
         let deck = [];
