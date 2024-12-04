@@ -1,4 +1,4 @@
-const word_is_valid = (word, dictionary) => {
+export const word_is_valid = (word, dictionary) => {
     return dictionary.includes(word.toUpperCase());
 };
 

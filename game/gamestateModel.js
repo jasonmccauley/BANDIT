@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { bananagrams_deck } from "./letterDeck.js";
-import { construct_word } from "./helpers_gameLogic.js";
+import { word_is_valid, construct_word } from "./helpers_gameLogic.js";
 
 // reverse fisher-yates shuffle
 const shuffle = (deck) => {
@@ -21,23 +21,36 @@ export class SingleGamestate {
         this.player_words = [];
 
         // take a tile from the deck and add it to the table
+        /**
+         * Take a tile from the deck and add it to the table.
+         * @returns {string} The letter of the new tile.
+         */
         this.draw = () => {
             let new_tile = this.deck.pop();
             this.table_tiles.push(new_tile);
 
             console.log(new_tile);
+            return new_tile;
         };
 
-        // apply the word finding function to verify a guessed word
-        // if it is correct, remove pertinent table tiles or words and add new word
+        /**
+         * Apply the word finding function to verify a guessed word.
+         * If it is correct, remove the pertinent table tiles or words and add the new word.
+         * @param {string} word
+         * @returns {boolean} Is the guess valid?
+         */
         this.guess = (word) => {
+            // If the word is not in the dictionary, reject it.
+            if (!word_is_valid(word, this.dictionary)) return false;
+
             let result = construct_word(
                 word,
                 this.table_tiles,
                 this.player_words
             );
 
-            if (result === null) return;
+            // If the word can't be validly constructed, reject it.
+            if (result === null) return false;
 
             for (const word of result) {
                 if (word.length === 1)
@@ -49,6 +62,7 @@ export class SingleGamestate {
                     );
             }
             this.player_words.push(word);
+            return true;
         };
     }
 
@@ -68,6 +82,6 @@ export class SingleGamestate {
         const data = fs.readFileSync(file, "utf-8");
 
         let dict = data.split("\n");
-        return dict.filter((x) => x.length > 3);
+        return dict.filter((x) => x.length > 2);
     }
 }
