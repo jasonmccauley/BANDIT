@@ -27,7 +27,7 @@ export const construct_word = (query_word, center_tiles, existing_words) => {
                 break;
             }
         }
-        if (word_is_valid) eligible_words.push(word);
+        if (word_is_valid && word !== query_word) eligible_words.push(word);
     }
 
     // Add center tiles to eligible_words
