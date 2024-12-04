@@ -160,7 +160,7 @@ await closeConnection();*/
 
 import { SingleGamestate } from "./game/gamestateModel.js";
 
-let state = new SingleGamestate();
+let state = new SingleGamestate(["Ben", "David"]);
 
 server.listen(3000, () => {
     console.log("We've now got a server!");

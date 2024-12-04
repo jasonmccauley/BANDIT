@@ -13,12 +13,15 @@ const shuffle = (deck) => {
 };
 
 export class SingleGamestate {
-    constructor() {
+    constructor(player_names) {
         this.deck = SingleGamestate.initialize_letter_deck(bananagrams_deck);
         this.dictionary =
             SingleGamestate.initialize_dictionary("./scrabble.txt");
         this.table_tiles = [];
-        this.player_words = [];
+        this.players = player_names.map(
+            (name) => new SingleGamestate.Player(name)
+        );
+        this.turn_number = 0;
 
         // take a tile from the deck and add it to the table
         /**
@@ -28,26 +31,24 @@ export class SingleGamestate {
         this.draw = () => {
             let new_tile = this.deck.pop();
             this.table_tiles.push(new_tile);
-
-            console.log(new_tile);
+            this.turn_number++;
             return new_tile;
         };
 
         /**
          * Apply the word finding function to verify a guessed word.
          * If it is correct, remove the pertinent table tiles or words and add the new word.
+         * @param {int} player_index
          * @param {string} word
          * @returns {boolean} Is the guess valid?
          */
-        this.guess = (word) => {
+        this.guess = (player_index, word) => {
             // If the word is not in the dictionary, reject it.
             if (!word_is_valid(word, this.dictionary)) return false;
 
-            let result = construct_word(
-                word,
-                this.table_tiles,
-                this.player_words
-            );
+            const player_words = this.players.flatMap((player) => player.words);
+
+            let result = construct_word(word, this.table_tiles, player_words);
 
             // If the word can't be validly constructed, reject it.
             if (result === null) return false;
@@ -55,15 +56,40 @@ export class SingleGamestate {
             for (const word of result) {
                 if (word.length === 1)
                     this.table_tiles.splice(this.table_tiles.indexOf(word), 1);
-                else
-                    this.player_words.splice(
-                        this.player_words.indexOf(word),
-                        1
-                    );
+                else {
+                    for (let player of this.players) {
+                        if (player.words.includes(word))
+                            player.words.splice(player.words.indexOf(word), 1);
+                    }
+                }
             }
-            this.player_words.push(word);
+            this.players[player_index].words.push(word);
             return true;
         };
+    }
+
+    static Player = class {
+        constructor(name) {
+            this.name = name;
+            this.words = [];
+            this.given_up = false;
+        }
+
+        /**
+         * Add a word to the player's word list.
+         * @param {string} word
+         */
+        add_word(word) {
+            this.words.push(word);
+        }
+    };
+
+    /**
+     * Return the player whose turn it currently is.
+     * @returns {Array<SingleGamestate.Player>}
+     */
+    active_player() {
+        return this.players[this.turn_number % this.players.length];
     }
 
     /**
