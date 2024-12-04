@@ -97,8 +97,9 @@ export class SingleGamestate {
      * @returns {boolean} Is the game concluded?
      */
     game_is_concluded() {
-        if (this.deck.length === 0) return true;
-        return false;
+        if (this.deck.length > 0) return false;
+        for (let player of this.players) if (!player.given_up) return false;
+        return true;
     }
 
     /**
@@ -115,8 +116,6 @@ export class SingleGamestate {
         return shuffle(deck);
     }
 
-    // traverse a file of word entries to make word dictionary
-    // note: filters out any words less than 3 letters
     /**
      * Traverse a file of word entries to make the word dictionary.
      * Note: Filters out any words less than 3 letters.
