@@ -101,7 +101,11 @@ export class SingleGamestate {
         return false;
     }
 
-    // generate a randomly ordered list of letter tiles to start the game
+    /**
+     * Generate a randomly ordered list of letter tiles to start the game.
+     * @param {object} deck_model
+     * @returns {Array<string>}
+     */
     static initialize_letter_deck(deck_model) {
         let deck = [];
         for (const tile in deck_model) {
@@ -113,8 +117,14 @@ export class SingleGamestate {
 
     // traverse a file of word entries to make word dictionary
     // note: filters out any words less than 3 letters
-    static initialize_dictionary(file) {
-        const data = fs.readFileSync(file, "utf-8");
+    /**
+     * Traverse a file of word entries to make the word dictionary.
+     * Note: Filters out any words less than 3 letters.
+     * @param {string} filepath
+     * @returns {Array<string>}
+     */
+    static initialize_dictionary(filepath) {
+        const data = fs.readFileSync(filepath, "utf-8");
 
         let dict = data.split("\n");
         return dict.filter((x) => x.length > 2);
