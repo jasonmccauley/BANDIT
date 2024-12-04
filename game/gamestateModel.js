@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+import fs from "node:fs";
 import { bananagrams_deck } from "./letterDeck.js";
 import { construct_word } from "./helpers_gameLogic.js";
 
@@ -10,12 +10,13 @@ const shuffle = (deck) => {
     }
 
     return deck;
-}
+};
 
 export class SingleGamestate {
     constructor() {
         this.deck = SingleGamestate.initialize_letter_deck(bananagrams_deck);
-        this.dictionary = SingleGamestate.initialize_dictionary('./scrabble.txt');
+        this.dictionary =
+            SingleGamestate.initialize_dictionary("./scrabble.txt");
         this.table_tiles = [];
         this.player_words = [];
 
@@ -30,33 +31,43 @@ export class SingleGamestate {
         // apply the word finding function to verify a guessed word
         // if it is correct, remove pertinent table tiles or words and add new word
         this.guess = (word) => {
-            let result = construct_word(word, this.table_tiles, this.player_words);
+            let result = construct_word(
+                word,
+                this.table_tiles,
+                this.player_words
+            );
 
             if (result === null) return;
 
-            for (const tile of result) {
-                this.table_tiles.splice(this.table_tiles.indexOf(tile), 1);
+            for (const word of result) {
+                if (word.length === 1)
+                    this.table_tiles.splice(this.table_tiles.indexOf(word), 1);
+                else
+                    this.player_words.splice(
+                        this.player_words.indexOf(word),
+                        1
+                    );
             }
             this.player_words.push(word);
-        }
+        };
     }
 
     // generate a randomly ordered list of letter tiles to start the game
     static initialize_letter_deck(deck_model) {
         let deck = [];
         for (const tile in deck_model) {
-            deck = deck.concat(Array(deck_model[tile]).fill(tile))
+            deck = deck.concat(Array(deck_model[tile]).fill(tile));
         }
-    
+
         return shuffle(deck);
     }
 
     // traverse a file of word entries to make word dictionary
     // note: filters out any words less than 3 letters
     static initialize_dictionary(file) {
-        const data = fs.readFileSync(file, 'utf-8');
+        const data = fs.readFileSync(file, "utf-8");
 
-        let dict = data.split('\n');
-        return dict.filter(x => x.length > 3);
+        let dict = data.split("\n");
+        return dict.filter((x) => x.length > 3);
     }
 }
