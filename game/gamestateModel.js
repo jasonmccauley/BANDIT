@@ -1,5 +1,7 @@
+import fs from "node:fs";
 import { bananagrams_deck } from "./letterDeck.js";
 import { word_is_valid, construct_word } from "./helpers_gameLogic.js";
+import { dictionaries } from "../config/mongoCollections.js";
 
 // reverse fisher-yates shuffle
 const shuffle = (deck) => {
@@ -57,10 +59,13 @@ export class SingleGamestate {
      * @returns {boolean} Is the guess valid?
      */
     guess = async (player_index, word) => {
+        // If the word is too short, reject it.
+        if (word.length < 3) return false;
+
         // If the word is not in the dictionary, reject it.
+        word = word.toLowerCase();
         const valid_word = await word_is_valid(word, this.dictionary);
         if (!valid_word) return false;
-
         const player_words = this.players.flatMap((player) => player.words);
 
         let result = construct_word(word, this.table_tiles, player_words);
@@ -111,5 +116,46 @@ export class SingleGamestate {
         }
 
         return shuffle(deck);
+    };
+
+    /**
+     * Load a new dictionary into the MongoDB with a trie structure
+     * @param {string} file_path
+     * @param {string} dictionary_name
+     */
+    static load_new_dictionary = async (file_path, dictionary_name) => {
+        const fileData = fs.readFileSync(file_path, "utf-8");
+        const words = fileData
+            .split("\n")
+            .map((word) => word.trim().toLowerCase())
+            .filter(Boolean);
+
+        const buildTrie = (words) => {
+            const trie = {};
+            for (const word of words) {
+                let currentNode = trie;
+                for (const char of word) {
+                    if (!currentNode[char]) {
+                        currentNode[char] = {};
+                    }
+                    currentNode = currentNode[char];
+                }
+                currentNode.end = true;
+            }
+            return trie;
+        };
+
+        const trie = buildTrie(words);
+
+        const dictCollection = await dictionaries();
+        await dictCollection.updateOne(
+            { name: dictionary_name },
+            { $set: { dictionary: trie } },
+            { upsert: true }
+        );
+
+        console.log(
+            `Successfully loaded dictionary "${dictionary_name}" into the database.`
+        );
     };
 }

@@ -9,13 +9,17 @@ import { dictionaries } from "../config/mongoCollections.js";
 export const word_is_valid = async (word, dictionary) => {
     const dictCollection = await dictionaries();
 
-    let thisDictionary = await dictCollection.findOne({ name: dictionary });
-    if (!thisDictionary) {
-        throw new Error("Dictionary does not exist.");
-    }
+    const wordExists = (dictionary, word) => {
+        let node = dictionary;
+        for (const char of word) {
+            if (!node[char]) return false;
+            node = node[char];
+        }
+        return !!node.end;
+    };
 
-    const wordExists = thisDictionary.dictionary.includes(word);
-    return wordExists;
+    const doc = await dictCollection.findOne({ name: dictionary });
+    return wordExists(doc.dictionary, word);
 };
 
 /**
