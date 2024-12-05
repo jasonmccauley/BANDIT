@@ -1,5 +1,21 @@
-export const word_is_valid = (word, dictionary) => {
-    return dictionary.includes(word.toUpperCase());
+import { dictionaries } from "../config/mongoCollections.js";
+
+/**
+ *
+ * @param {string} word
+ * @param {string} dictionary
+ * @returns {boolean} Is the word a valid word in the named dictionary?
+ */
+export const word_is_valid = async (word, dictionary) => {
+    const dictCollection = await dictionaries();
+
+    let thisDictionary = await dictCollection.findOne({ name: dictionary });
+    if (!thisDictionary) {
+        throw new Error("Dictionary does not exist.");
+    }
+
+    const wordExists = thisDictionary.dictionary.includes(word);
+    return wordExists;
 };
 
 /**

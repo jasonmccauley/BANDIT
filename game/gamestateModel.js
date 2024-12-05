@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import { bananagrams_deck } from "./letterDeck.js";
 import { word_is_valid, construct_word } from "./helpers_gameLogic.js";
 
@@ -13,10 +12,9 @@ const shuffle = (deck) => {
 };
 
 export class SingleGamestate {
-    constructor(player_names) {
+    constructor(player_names, dictionary_name) {
         this.deck = SingleGamestate.initialize_letter_deck(bananagrams_deck);
-        this.dictionary =
-            SingleGamestate.initialize_dictionary("./scrabble.txt");
+        this.dictionary = dictionary_name;
         this.table_tiles = [];
         this.players = player_names.map(
             (name) => new SingleGamestate.Player(name)
@@ -42,9 +40,10 @@ export class SingleGamestate {
          * @param {string} word
          * @returns {boolean} Is the guess valid?
          */
-        this.guess = (player_index, word) => {
+        this.guess = async (player_index, word) => {
             // If the word is not in the dictionary, reject it.
-            if (!word_is_valid(word, this.dictionary)) return false;
+            const valid_word = await word_is_valid(word, this.dictionary);
+            if (!valid_word) return false;
 
             const player_words = this.players.flatMap((player) => player.words);
 
@@ -114,18 +113,5 @@ export class SingleGamestate {
         }
 
         return shuffle(deck);
-    }
-
-    /**
-     * Traverse a file of word entries to make the word dictionary.
-     * Note: Filters out any words less than 3 letters.
-     * @param {string} filepath
-     * @returns {Array<string>}
-     */
-    static initialize_dictionary(filepath) {
-        const data = fs.readFileSync(filepath, "utf-8");
-
-        let dict = data.split("\n");
-        return dict.filter((x) => x.length > 2);
     }
 }

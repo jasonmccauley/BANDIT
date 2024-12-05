@@ -1,16 +1,16 @@
 import { dbConnection } from "./mongoConnection.js";
 
 const getCollectionFn = (collection) => {
-  let _col = undefined;
+    let _col = undefined;
 
-  return async () => {
-    if (!_col) {
-      const db = await dbConnection();
-      _col = await db.collection(collection);
-    }
+    return async () => {
+        if (!_col) {
+            const db = await dbConnection();
+            _col = await db.collection(collection);
+        }
 
-    return _col;
-  };
+        return _col;
+    };
 };
 
 /* add as many collections as needed using the following naming convention:
@@ -18,3 +18,4 @@ const getCollectionFn = (collection) => {
 export const things = getCollectionFn('things');
 */
 export const users = getCollectionFn("users");
+export const dictionaries = getCollectionFn("dictionaries");
