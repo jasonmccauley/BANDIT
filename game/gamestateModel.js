@@ -16,7 +16,7 @@ const shuffle = (deck) => {
 export class SingleGamestate {
     constructor(player_names, dictionary_name) {
         this.deck = SingleGamestate.initialize_letter_deck(bananagrams_deck);
-        this.dictionary = dictionary_name;
+        this.dictionary = SingleGamestate.load_dictionary(dictionary_name);
         this.table_tiles = [];
         this.players = player_names.map(
             (name) => new SingleGamestate.Player(name)
@@ -119,11 +119,21 @@ export class SingleGamestate {
     };
 
     /**
+     *
+     * @param {string} dictionary_name
+     * @returns {object} The dictionary object with the given name.
+     */
+    static load_dictionary = async (dictionary_name) => {
+        const dictCollection = await dictionaries();
+        return await dictCollection.findOne({ name: dictionary_name });
+    };
+
+    /**
      * Load a new dictionary into the MongoDB with a trie structure
      * @param {string} file_path
      * @param {string} dictionary_name
      */
-    static load_new_dictionary = async (file_path, dictionary_name) => {
+    static create_new_dictionary = async (file_path, dictionary_name) => {
         const fileData = fs.readFileSync(file_path, "utf-8");
         const words = fileData
             .split("\n")

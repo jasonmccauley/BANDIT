@@ -1,5 +1,3 @@
-import { dictionaries } from "../config/mongoCollections.js";
-
 /**
  *
  * @param {string} word
@@ -7,8 +5,6 @@ import { dictionaries } from "../config/mongoCollections.js";
  * @returns {boolean} Is the word a valid word in the named dictionary?
  */
 export const word_is_valid = async (word, dictionary) => {
-    const dictCollection = await dictionaries();
-
     const wordExists = (dictionary, word) => {
         let node = dictionary;
         for (const char of word) {
@@ -18,8 +14,7 @@ export const word_is_valid = async (word, dictionary) => {
         return !!node.end;
     };
 
-    const doc = await dictCollection.findOne({ name: dictionary });
-    return wordExists(doc.dictionary, word);
+    return wordExists(dictionary.dictionary, word);
 };
 
 /**
