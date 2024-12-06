@@ -14,4 +14,5 @@ socket.on("resync", (game) => {
   console.log(game);
   connected = true;
   connection.innerHTML = "You are connected";
+  window.isConnected = true;
 });

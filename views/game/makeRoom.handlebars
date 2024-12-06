@@ -12,13 +12,14 @@
       <input class="submit" type="submit" value="Search for players!" />
     </form>
 
-    <p id="roomStatus" display="none"></p>
-    <p id="playerNumber" display="none"></p>
+    <p id="roomStatus" class="startHidden"></p>
+    <p id="playerNumber" class="startHidden"></p>
 
-    <button id="startButton"> Start the game!</button>
+    <button id="startButton" class="startHidden"> Start the game!</button>
+    <p id="waitForHost" class="startHidden">Waiting for the host to start the
+      game</p>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/public/js/searchRoom.js"></script>
-  <script src="/public/js/disconnectWarning.js"></script>
 </div>

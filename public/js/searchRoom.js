@@ -51,8 +51,13 @@ socket.on("joinRoom", (game) => {
         game["players"].indexOf(socket.id) + 1
       }`;
 
-      startButton.style.display = "block";
-      startButton.href = `/game/${game["passcode"]}`;
+      if (game["players"].indexOf(socket.id) === 0) {
+        startButton.style.display = "block";
+        startButton.href = `/game/${game["passcode"]}`;
+      } else {
+        document.getElementById("waitForHost").style.display = "block";
+      }
+
       roomForm.style.display = "none";
 
       window.isConnected = true;
@@ -69,6 +74,8 @@ socket.on("joinRoom", (game) => {
 socket.on("navigateToGame", (passcode) => {
   console.log("game started");
   if (passcode) {
+    // prevents page transition from being paused by warning
+    window.isConnected = false;
     window.location.href = `/game/${passcode}`;
   }
 });

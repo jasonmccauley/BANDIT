@@ -237,3 +237,7 @@ nav {
 #gameId {
   display: none;
 }
+
+.startHidden {
+  display: none;
+}
