@@ -135,20 +135,13 @@ io.on("connection", (socket) => {
         if (games.hasOwnProperty(passcode)) {
             // after page navigation, the room is deleted from the socket and needs to be recreated
             socket.join(passcode);
-            io.to(passcode).emit("resync", games[passcode]);
+            io.to(passcode).emit("resync");
         }
     });
 
-    socket.on("updateGamestate", (passcode) => {
-        io.to(passcode).emit("updateGamestate", games[passcode]);
-    });
-
     socket.on("draw", (passcode) => {
-        try {
-            games[passcode].gamestate.draw();
-            console.log("drew");
-            io.to(passcode).emit("updateGamestate", games[passcode]);
-        } catch {}
+        games[passcode].gamestate.draw();
+        io.to(passcode).emit("updateGamestate", games[passcode].gamestate);
     })
 
     socket.on("disconnect", () => {

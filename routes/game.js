@@ -17,8 +17,7 @@ router.route("/:gameId").get(async (req, res) => {
     res.render("game/game", {
       user: req.session.user,
       game: true,
-      gameId: req.params.gameId,
-      gamestate: games[req.params.gameId]
+      gameId: req.params.gameId
     });
   } catch (e) {
     res.status(500).json({ error: e });

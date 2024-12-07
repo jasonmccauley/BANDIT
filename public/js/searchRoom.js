@@ -2,7 +2,7 @@
 const socket = io();
 
 let passcode, username, roomForm, startButton;
-let gameState;
+let room_state;
 
 roomForm = document.getElementById("roomForm");
 startButton = document.getElementById("startButton");
@@ -26,11 +26,11 @@ roomForm.addEventListener("submit", (event) => {
 
 // navigates all players at the same time to the game screen
 startButton.addEventListener("click", () => {
-  if (gameState["players"].length < 2) {
+  if (room_state["players"].length < 2) {
     alert("Not enough players");
   } else {
     // 1 player emits this to server, then server emits it back to every player
-    socket.emit("startGame", gameState["passcode"]);
+    socket.emit("startGame", room_state["passcode"]);
   }
 });
 
@@ -40,7 +40,7 @@ socket.on("joinRoom", (game) => {
     console.log(game);
 
     if (game["players"].length < game["roomSize"]) {
-      gameState = game;
+      room_state = game;
       let roomStatus = document.getElementById("roomStatus");
       roomStatus.style.display = "block";
       roomStatus.innerHTML = `Room capacity: ${game["players"].length}/${game["roomSize"]}`;
@@ -82,7 +82,7 @@ socket.on("navigateToGame", (passcode) => {
 
 // updates player count if someone disconnects
 socket.on("refreshPlayerCount", (game) => {
-  gameState = game;
+  room_state = game;
   let roomStatus = document.getElementById("roomStatus");
   roomStatus.innerHTML = `Room capacity: ${game["players"].length}/${game["roomSize"]}`;
 
