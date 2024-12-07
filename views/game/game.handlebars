@@ -3,6 +3,12 @@
   <p>Your game ID is {{gameId}}</p>
   <p id="connected">You are not connected</p>
   <input id="gameId" value={{gameId}} />
+
+  <p>Table Tiles: {{gamestate.table_tiles}}</p>
+
+  <button id="drawTileButton">Draw</button>
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="/public/js/resyncRoom.js"></script>
+  <script src="/public/js/gameHandler.js"></script>
 </div>

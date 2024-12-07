@@ -30,7 +30,7 @@ startButton.addEventListener("click", () => {
     alert("Not enough players");
   } else {
     // 1 player emits this to server, then server emits it back to every player
-    socket.emit("navigateToGame", gameState["passcode"]);
+    socket.emit("startGame", gameState["passcode"]);
   }
 });
 

@@ -71,9 +71,11 @@ app.use("/game", (req, res, next) => {
 });
 
 // stores game state for all games
-const games = {};
+import { SingleGamestate } from "./game/gamestateModel.js";
+import { games } from './routes/game.js'
 
-// stores each socket id (user) and which room they are part of. This makes it easier to remove a player from a lobby if they disconnect
+// stores each socket id (user) and which room they are part of. 
+// This makes it easier to remove a player from a lobby if they disconnect
 const socketRooms = {};
 
 io.on("connection", (socket) => {
@@ -87,11 +89,8 @@ io.on("connection", (socket) => {
 
         if (!games[passcode]) {
             games[passcode] = {
-                tiles: [],
-                words: [],
                 players: Array.from(io.sockets.adapter.rooms.get(passcode)),
                 roomSize: 5,
-                currentPlayer: 0,
                 canJoin: true,
                 passcode: passcode,
             };
@@ -100,8 +99,8 @@ io.on("connection", (socket) => {
                 io.sockets.adapter.rooms.get(passcode)
             );
         }
-        const game = games[passcode];
 
+        const game = games[passcode];
         socketRooms[socket.id] = passcode;
 
         // for room "passcode" only, send "game" to the client-side js
@@ -109,7 +108,16 @@ io.on("connection", (socket) => {
     });
 
     // when the game is started, everyone in the lobby navigates to /game/:gameId
+    //TODO: uses both "players" in gamestate and outside (Should standardize)
     socket.on("startGame", (passcode) => {
+        games[passcode] = {
+            gamestate: new SingleGamestate(
+                games[passcode]["players"],
+                "Scrabble"
+            ),
+            players: games[passcode]["players"]
+        };
+
         io.to(passcode).emit("navigateToGame", passcode);
     });
 
@@ -130,6 +138,18 @@ io.on("connection", (socket) => {
             io.to(passcode).emit("resync", games[passcode]);
         }
     });
+
+    socket.on("updateGamestate", (passcode) => {
+        io.to(passcode).emit("updateGamestate", games[passcode]);
+    });
+
+    socket.on("draw", (passcode) => {
+        try {
+            games[passcode].gamestate.draw();
+            console.log("drew");
+            io.to(passcode).emit("updateGamestate", games[passcode]);
+        } catch {}
+    })
 
     socket.on("disconnect", () => {
         console.log(`Client disconnected: ${socket.id}`);
@@ -157,10 +177,6 @@ const db = await dbConnection();
 const testCollection = await tests();
 const insertInfo = await testCollection.insertOne({ test: 2 });
 await closeConnection();*/
-
-import { SingleGamestate } from "./game/gamestateModel.js";
-
-let state = new SingleGamestate(["Ben", "David"], "Scrabble");
 
 server.listen(3000, () => {
     console.log("We've now got a server!");

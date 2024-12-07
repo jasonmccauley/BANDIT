@@ -18,9 +18,10 @@ export class SingleGamestate {
         this.deck = SingleGamestate.initialize_letter_deck(bananagrams_deck);
         this.dictionary = SingleGamestate.load_dictionary(dictionary_name);
         this.table_tiles = [];
-        this.players = player_names.map(
+        this.players = shuffle(player_names.map(
             (name) => new SingleGamestate.Player(name)
-        );
+        ));
+        this.active_player = this.players[0];
         this.turn_number = 0;
     }
 
@@ -88,14 +89,6 @@ export class SingleGamestate {
     };
 
     /**
-     * Return the player whose turn it currently is.
-     * @returns {Array<SingleGamestate.Player>}
-     */
-    active_player = () => {
-        return this.players[this.turn_number % this.players.length];
-    };
-
-    /**
      * @returns {boolean} Is the game concluded?
      */
     game_is_concluded = () => {
@@ -119,53 +112,11 @@ export class SingleGamestate {
     };
 
     /**
-     *
      * @param {string} dictionary_name
      * @returns {object} The dictionary object with the given name.
      */
     static load_dictionary = async (dictionary_name) => {
         const dictCollection = await dictionaries();
         return await dictCollection.findOne({ name: dictionary_name });
-    };
-
-    /**
-     * Load a new dictionary into the MongoDB with a trie structure
-     * @param {string} file_path
-     * @param {string} dictionary_name
-     */
-    static create_new_dictionary = async (file_path, dictionary_name) => {
-        const fileData = fs.readFileSync(file_path, "utf-8");
-        const words = fileData
-            .split("\n")
-            .map((word) => word.trim().toLowerCase())
-            .filter(Boolean);
-
-        const buildTrie = (words) => {
-            const trie = {};
-            for (const word of words) {
-                let currentNode = trie;
-                for (const char of word) {
-                    if (!currentNode[char]) {
-                        currentNode[char] = {};
-                    }
-                    currentNode = currentNode[char];
-                }
-                currentNode.end = true;
-            }
-            return trie;
-        };
-
-        const trie = buildTrie(words);
-
-        const dictCollection = await dictionaries();
-        await dictCollection.updateOne(
-            { name: dictionary_name },
-            { $set: { dictionary: trie } },
-            { upsert: true }
-        );
-
-        console.log(
-            `Successfully loaded dictionary "${dictionary_name}" into the database.`
-        );
     };
 }
