@@ -7,7 +7,7 @@ form {
 
 /* General Styling */
 body {
-    font-family: "Arial", sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     background-color: #f4f4f9;
     color: #333;
     margin: 0;
@@ -21,6 +21,8 @@ main {
     background: #ffffff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+
+    text-align: center;
 }
 
 h1 {
@@ -86,6 +88,18 @@ h1 > .tile {
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
 }
 
+#greeting {
+    display: inline-block;
+    margin: 10px;
+
+    font-size: larger;
+}
+
+#greeting_username {
+    color: navy;
+    font-weight: bold;
+}
+
 /* Buttons */
 button {
     padding: 10px 15px;
@@ -95,6 +109,7 @@ button {
     color: #fff;
     font-size: 16px;
     cursor: pointer;
+    width: 100%;
 }
 
 button:hover {
