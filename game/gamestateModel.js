@@ -16,11 +16,11 @@ const shuffle = (deck) => {
 export class Gamestate {
     constructor(player_names, dictionary_name) {
         this.deck = Gamestate.initialize_letter_deck(bananagrams_deck);
-        this.dictionary = Gamestate.load_dictionary(dictionary_name);
+        this.dictionary = null;
         this.table_tiles = [];
-        this.players = shuffle(player_names.map(
-            (name) => new Gamestate.Player(name)
-        ));
+        this.players = shuffle(
+            player_names.map((name) => new Gamestate.Player(name))
+        );
         this.active_player = this.players[0];
         this.turn_number = 0;
     }
@@ -43,14 +43,13 @@ export class Gamestate {
 
     get_player_by_name = (name) => {
         for (let player in this.players) {
-            if (this.players[player].name === name)
-                return this.players[player];
+            if (this.players[player].name === name) return this.players[player];
         }
-    }
+    };
 
     get_player_index = (player) => {
         return this.players.indexOf(player);
-    }
+    };
 
     /**
      * Take a tile from the deck and add it to the table.
@@ -67,11 +66,10 @@ export class Gamestate {
         let idx = this.players.indexOf(this.active_player);
         idx++;
 
-        if (idx === this.players.length)
-            idx = 0;
+        if (idx === this.players.length) idx = 0;
 
         this.active_player = this.players[idx];
-    }
+    };
 
     /**
      * Apply the word finding function to verify a guessed word.
@@ -136,8 +134,11 @@ export class Gamestate {
      * @param {string} dictionary_name
      * @returns {object} The dictionary object with the given name.
      */
-    static load_dictionary = async (dictionary_name) => {
+    load_dictionary = async (dictionary_name) => {
         const dictCollection = await dictionaries();
-        return await dictCollection.findOne({ name: dictionary_name });
+        this.dictionary = await dictCollection.findOne({
+            name: dictionary_name,
+        });
+        return this.dictionary;
     };
 }
