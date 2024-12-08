@@ -48,19 +48,42 @@ h1 {
 
 .tile {
     display: inline-block;
-    margin: 0px 5px;
+    margin: 5px 5px;
     padding: 5px 13px;
     border: 1px solid rgb(62, 62, 62);
-    line-height: 1;
+    border-radius: 5%;
+    line-height: 1.2;
     text-align: center;
-    width: 35px;
+    width: 40px;
     font-style: normal;
 
     font-size: 50px;
-    color: rgb(62, 62, 62);
+    color: rgb(68, 44, 32);
     background-color: rgb(241, 213, 123);
 
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+h1 > .tile {
     animation: jiggle 0.5s ease-in-out infinite;
+}
+
+.word {
+    display: inline-block;
+    margin: 10px;
+}
+
+.word .tile {
+    margin: 0px;
+    font-size: 40px;
+    width: 31px;
+}
+
+.tile:hover,
+.word:hover .tile {
+    transform: translateY(-5px); /* Makes it "pop" upward */
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 /* Buttons */

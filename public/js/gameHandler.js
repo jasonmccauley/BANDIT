@@ -12,26 +12,45 @@ draw_button.addEventListener("click", () => {
 guess_form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    socket.emit("guess", { 
+    socket.emit("guess", {
         guess: document.getElementById("guessWord").value,
-        passcode: gameId
+        passcode: gameId,
     });
 });
 
 socket.on("updateGamestate", (state) => {
     let gamestate = state.gamestate;
-    let roomstate = state.roomstate;
 
     let active_player_name = gamestate.active_player.name;
 
     current_player.innerHTML = active_player_name;
-    table_tiles.innerHTML = gamestate.table_tiles;
-    
+
+    let tiles = [];
+    for (const tile of gamestate.table_tiles) {
+        tiles.push(`
+            <p class="tile">${tile.toUpperCase()}</p>
+            `);
+    }
+
+    table_tiles.innerHTML = tiles.join("");
+
     let player_words_str = "";
 
     for (let player in gamestate.players) {
-        player_words_str += `${gamestate.players[player].name}:<br>${gamestate.players[player].words.join("<br>")}<br><br>`
+        let word_list = [];
+        for (const word of gamestate.players[player].words) {
+            let this_word = [];
+            for (const letter of word) {
+                this_word.push(`<p class="tile">${letter.toUpperCase()}</p>`);
+            }
+            word_list.push(`
+                <div class="word">${this_word.join("")}</div>
+            `);
+        }
+        player_words_str += `${gamestate.players[player].name}:<br>
+        ${word_list.join("")}
+        <br><br>`;
     }
 
-    words_in_play.innerHTML = player_words_str
-})
+    words_in_play.innerHTML = player_words_str;
+});
