@@ -72,8 +72,9 @@ app.use("/game", (req, res, next) => {
 
 // stores game state for all games
 import { Gamestate } from "./game/gamestateModel.js";
-import { games } from "./routes/game.js";
 import { Roomstate } from "./game/roomstate.js";
+
+const games = {};
 
 // stores each socket id (user) and which room they are part of.
 // This makes it easier to remove a player from a lobby if they disconnect

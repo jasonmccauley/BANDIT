@@ -2,8 +2,6 @@ import { Router } from "express";
 
 const router = Router();
 
-export const games = {};
-
 router.route("/").get(async (req, res) => {
   try {
     res.render("game/makeRoom", { user: req.session.user, game: true });

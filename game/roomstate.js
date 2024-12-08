@@ -12,4 +12,8 @@ export class Roomstate {
 
         this.connection_map[id].player_number = Object.keys(this.connection_map).length
     }
+
+    update_player = (player_name, new_id) => {
+        
+    }
 }
