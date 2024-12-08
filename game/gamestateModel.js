@@ -13,13 +13,13 @@ const shuffle = (deck) => {
     return deck;
 };
 
-export class SingleGamestate {
+export class Gamestate {
     constructor(player_names, dictionary_name) {
-        this.deck = SingleGamestate.initialize_letter_deck(bananagrams_deck);
-        this.dictionary = SingleGamestate.load_dictionary(dictionary_name);
+        this.deck = Gamestate.initialize_letter_deck(bananagrams_deck);
+        this.dictionary = Gamestate.load_dictionary(dictionary_name);
         this.table_tiles = [];
         this.players = shuffle(player_names.map(
-            (name) => new SingleGamestate.Player(name)
+            (name) => new Gamestate.Player(name)
         ));
         this.active_player = this.players[0];
         this.turn_number = 0;

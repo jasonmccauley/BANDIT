@@ -26,7 +26,7 @@ roomForm.addEventListener("submit", (event) => {
 
 // navigates all players at the same time to the game screen
 startButton.addEventListener("click", () => {
-  if (room_state["players"].length < 2) {
+  if (Object.keys(room_state.connection_map).length < 2) {
     alert("Not enough players");
   } else {
     // 1 player emits this to server, then server emits it back to every player
@@ -39,19 +39,19 @@ socket.on("joinRoom", (game) => {
   if (game) {
     console.log(game);
 
-    if (game["players"].length < game["roomSize"]) {
+    if (Object.keys(game.connection_map).length < game["room_size"]) {
       room_state = game;
       let roomStatus = document.getElementById("roomStatus");
       roomStatus.style.display = "block";
-      roomStatus.innerHTML = `Room capacity: ${game["players"].length}/${game["roomSize"]}`;
+      roomStatus.innerHTML = `Room capacity: ${Object.keys(room_state.connection_map).length}/${game["room_size"]}`;
 
       let playerNumber = document.getElementById("playerNumber");
       playerNumber.style.display = "block";
       playerNumber.innerHTML = `You are player number ${
-        game["players"].indexOf(socket.id) + 1
+        game.connection_map[socket.id].player_number
       }`;
 
-      if (game["players"].indexOf(socket.id) === 0) {
+      if (game.connection_map[socket.id].player_number === 1) {
         startButton.style.display = "block";
         startButton.href = `/game/${game["passcode"]}`;
       } else {
@@ -84,7 +84,7 @@ socket.on("navigateToGame", (passcode) => {
 socket.on("refreshPlayerCount", (game) => {
   room_state = game;
   let roomStatus = document.getElementById("roomStatus");
-  roomStatus.innerHTML = `Room capacity: ${game["players"].length}/${game["roomSize"]}`;
+  roomStatus.innerHTML = `Room capacity: ${game["players"].length}/${game["room_size"]}`;
 
   let playerNumber = document.getElementById("playerNumber");
   playerNumber.innerHTML = `You are player number ${

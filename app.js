@@ -71,8 +71,9 @@ app.use("/game", (req, res, next) => {
 });
 
 // stores game state for all games
-import { SingleGamestate } from "./game/gamestateModel.js";
+import { Gamestate } from "./game/gamestateModel.js";
 import { games } from './routes/game.js'
+import { Roomstate } from "./game/roomstate.js";
 
 // stores each socket id (user) and which room they are part of. 
 // This makes it easier to remove a player from a lobby if they disconnect
@@ -88,17 +89,10 @@ io.on("connection", (socket) => {
         socket.join(passcode);
 
         if (!games[passcode]) {
-            games[passcode] = {
-                players: Array.from(io.sockets.adapter.rooms.get(passcode)),
-                roomSize: 5,
-                canJoin: true,
-                passcode: passcode,
-            };
-        } else {
-            games[passcode]["players"] = Array.from(
-                io.sockets.adapter.rooms.get(passcode)
-            );
+            games[passcode] = new Roomstate(passcode);
         }
+
+        games[passcode].add_player(username, socket.id);
 
         const game = games[passcode];
         socketRooms[socket.id] = passcode;
@@ -111,11 +105,11 @@ io.on("connection", (socket) => {
     //TODO: uses both "players" in gamestate and outside (Should standardize)
     socket.on("startGame", (passcode) => {
         games[passcode] = {
-            gamestate: new SingleGamestate(
-                games[passcode]["players"],
+            gamestate: new Gamestate(
+                Object.keys(games[passcode].connection_map).map((x) => games[passcode].connection_map[x].name),
                 "Scrabble"
             ),
-            players: games[passcode]["players"]
+            roomstate: games[passcode]
         };
 
         io.to(passcode).emit("navigateToGame", passcode);
@@ -135,7 +129,7 @@ io.on("connection", (socket) => {
         if (games.hasOwnProperty(passcode)) {
             // after page navigation, the room is deleted from the socket and needs to be recreated
             socket.join(passcode);
-            io.to(passcode).emit("resync");
+            io.to(passcode).emit("resync", passcode);
         }
     });
 
