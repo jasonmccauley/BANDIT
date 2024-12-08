@@ -4,7 +4,7 @@
  * @param {string} dictionary
  * @returns {boolean} Is the word a valid word in the named dictionary?
  */
-export const word_is_valid = async (word, dictionary) => {
+export const word_is_valid = (word, dictionary) => {
     const wordExists = (dictionary, word) => {
         let node = dictionary;
         for (const char of word) {

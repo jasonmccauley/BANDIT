@@ -115,8 +115,8 @@ io.on("connection", (socket) => {
             roomstate: games[passcode]
         };
 
-    io.to(passcode).emit("navigateToGame", passcode);
-  });
+        io.to(passcode).emit("navigateToGame", passcode);
+    });
 
   // navigates all players to new page
   socket.on("navigateToGame", (passcode) => {
@@ -155,10 +155,11 @@ io.on("connection", (socket) => {
         const { guess, passcode } = response;
         const game = games[passcode];
 
-        let this_player = game.roomstate.get_player_by_id(socket.id);
+        let this_room_player = game.roomstate.get_player_by_id(socket.id);
+        let this_player = game.gamestate.get_player_by_name(this_room_player.name);
 
         // todo: get index of player by their roomstate player representation
-        game.gamestate.guess(game.gamestate.players.indexOf(this_player.name), guess);
+        game.gamestate.guess(game.gamestate.get_player_index(this_player), guess);
 
         io.to(passcode).emit("updateGamestate", game);
     });

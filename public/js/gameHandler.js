@@ -12,7 +12,7 @@ guess_form.addEventListener("submit", (event) => {
     event.preventDefault();
 
     socket.emit("guess", { 
-        guess: document.getElementById("guessWord"),
+        guess: document.getElementById("guessWord").value,
         passcode: gameId
     });
 });

@@ -41,6 +41,17 @@ export class Gamestate {
         };
     };
 
+    get_player_by_name = (name) => {
+        for (let player in this.players) {
+            if (this.players[player].name === name)
+                return this.players[player];
+        }
+    }
+
+    get_player_index = (player) => {
+        return this.players.indexOf(player);
+    }
+
     /**
      * Take a tile from the deck and add it to the table.
      * @returns {string} The letter of the new tile.
@@ -75,7 +86,7 @@ export class Gamestate {
 
         // If the word is not in the dictionary, reject it.
         word = word.toLowerCase();
-        const valid_word = await word_is_valid(word, this.dictionary);
+        const valid_word = word_is_valid(word, this.dictionary);
         if (!valid_word) return false;
         const player_words = this.players.flatMap((player) => player.words);
 
