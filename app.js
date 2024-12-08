@@ -130,12 +130,17 @@ io.on("connection", (socket) => {
             // after page navigation, the room is deleted from the socket and needs to be recreated
             socket.join(passcode);
             io.to(passcode).emit("resync", passcode);
+            io.to(passcode).emit("updateGamestate", games[passcode]);
         }
     });
 
     socket.on("draw", (passcode) => {
+        let this_player = games[passcode].roomstate.connection_map[socket.id];
+        if (this_player.name !== games[passcode].gamestate.active_player.name)
+            return;
+
         games[passcode].gamestate.draw();
-        io.to(passcode).emit("updateGamestate", games[passcode].gamestate);
+        io.to(passcode).emit("updateGamestate", games[passcode]);
     })
 
     socket.on("disconnect", () => {
