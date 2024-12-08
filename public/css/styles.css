@@ -237,6 +237,9 @@ nav {
 #gameId {
   display: none;
 }
+#username {
+  display: none;
+}
 
 .startHidden {
   display: none;
