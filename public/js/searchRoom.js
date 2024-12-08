@@ -35,7 +35,8 @@ startButton.addEventListener("click", () => {
 });
 
 // this is triggered when app.js does io.to(passcode).emit("joinRoom", someData)
-socket.on("joinRoom", (game) => {
+socket.on("joinRoom", (response) => {
+  const { game, username } = response;
   if (game) {
     console.log(game);
 
@@ -48,10 +49,10 @@ socket.on("joinRoom", (game) => {
       let playerNumber = document.getElementById("playerNumber");
       playerNumber.style.display = "block";
       playerNumber.innerHTML = `You are player number ${
-        game.connection_map[socket.id].player_number
+        game.connection_map[username].player_number
       }`;
 
-      if (game.connection_map[socket.id].player_number === 1) {
+      if (game.connection_map[username].player_number === 1) {
         startButton.style.display = "block";
         startButton.href = `/game/${game["passcode"]}`;
       } else {

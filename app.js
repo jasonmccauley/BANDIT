@@ -98,22 +98,22 @@ io.on("connection", (socket) => {
     const game = games[passcode];
     socketRooms[socket.id] = passcode;
 
-    // for room "passcode" only, send "game" to the client-side js
-    io.to(passcode).emit("joinRoom", game);
-  });
+        // for room "passcode" only, send "game" to the client-side js
+        io.to(passcode).emit("joinRoom", {
+            game: game, username: username
+        });
+    });
 
-  // when the game is started, everyone in the lobby navigates to /game/:gameId
-  //TODO: uses both "players" in gamestate and outside (Should standardize)
-  socket.on("startGame", (passcode) => {
-    games[passcode] = {
-      gamestate: new Gamestate(
-        Object.keys(games[passcode].connection_map).map(
-          (x) => games[passcode].connection_map[x].name
-        ),
-        "Scrabble"
-      ),
-      roomstate: games[passcode],
-    };
+    // when the game is started, everyone in the lobby navigates to /game/:gameId
+    //TODO: uses both "players" in gamestate and outside (Should standardize)
+    socket.on("startGame", (passcode) => {
+        games[passcode] = {
+            gamestate: new Gamestate(
+                Object.keys(games[passcode].connection_map),
+                "Scrabble"
+            ),
+            roomstate: games[passcode]
+        };
 
     io.to(passcode).emit("navigateToGame", passcode);
   });
@@ -138,14 +138,10 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("draw", (passcode) => {
-    let this_player = games[passcode].roomstate.connection_map[socket.id];
-    if (this_player.name !== games[passcode].gamestate.active_player.name)
-      return;
-
-    games[passcode].gamestate.draw();
-    io.to(passcode).emit("updateGamestate", games[passcode]);
-  });
+    socket.on("draw", (passcode) => {
+        games[passcode].gamestate.draw();
+        io.to(passcode).emit("updateGamestate", games[passcode]);
+    })
 
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);

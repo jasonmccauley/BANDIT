@@ -6,11 +6,11 @@ export class Roomstate {
     }
 
     add_player = (player_name, id) => {
-        this.connection_map[id] = {
-            name: player_name,
+        this.connection_map[player_name] = {
+            id: id,
         };
 
-        this.connection_map[id].player_number = Object.keys(this.connection_map).length
+        this.connection_map[player_name].player_number = Object.keys(this.connection_map).length
     }
 
     update_player = (player_name, new_id) => {
