@@ -6,16 +6,16 @@ import http from "http";
 import { Server } from "socket.io";
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
-    // If the user posts to the server with a property called _method, rewrite the request's method
-    // To be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets
-    // rewritten in this middleware to a PUT route
-    if (req.body && req.body._method) {
-        req.method = req.body._method;
-        delete req.body._method;
-    }
+  // If the user posts to the server with a property called _method, rewrite the request's method
+  // To be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets
+  // rewritten in this middleware to a PUT route
+  if (req.body && req.body._method) {
+    req.method = req.body._method;
+    delete req.body._method;
+  }
 
-    // let the next middleware run:
-    next();
+  // let the next middleware run:
+  next();
 };
 
 const app = express();
@@ -28,136 +28,139 @@ app.use(express.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods);
 
 app.use(
-    session({
-        name: "BANDIT",
-        secret: "super duper secret, change this later",
-        saveUninitialized: false,
-        resave: false,
-        cookie: { maxAge: 3600000 },
-    })
+  session({
+    name: "BANDIT",
+    secret: "super duper secret, change this later",
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: 3600000 },
+  })
 );
 
 app.engine(
-    "handlebars",
-    exphbs.engine({
-        defaultLayout: "main",
-        helpers: {
-            isValidObject: (input) =>
-                typeof input === "object" &&
-                !Array.isArray(input) &&
-                input !== null &&
-                Object.keys(input).length !== 0,
-        },
-    })
+  "handlebars",
+  exphbs.engine({
+    defaultLayout: "main",
+    helpers: {
+      isValidObject: (input) =>
+        typeof input === "object" &&
+        !Array.isArray(input) &&
+        input !== null &&
+        Object.keys(input).length !== 0,
+    },
+  })
 );
 app.set("view engine", "handlebars");
 
 // prevents user from going to login/signup page if they are already logged in
 app.use("/users", (req, res, next) => {
-    if (req.session.user && (req.path === "/login" || req.path === "/signup")) {
-        return res.redirect("/");
-    } else {
-        next();
-    }
+  if (req.session.user && (req.path === "/login" || req.path === "/signup")) {
+    return res.redirect("/");
+  } else {
+    next();
+  }
 });
 
 // prevents user from going to games page if they are not logged in
 app.use("/game", (req, res, next) => {
-    if (!req.session.user) {
-        return res.redirect("/users/login");
-    } else {
-        next();
-    }
+  if (!req.session.user) {
+    return res.redirect("/users/login");
+  } else {
+    next();
+  }
 });
 
 // stores game state for all games
 import { Gamestate } from "./game/gamestateModel.js";
-import { games } from './routes/game.js'
+import { games } from "./routes/game.js";
 import { Roomstate } from "./game/roomstate.js";
 
-// stores each socket id (user) and which room they are part of. 
+// stores each socket id (user) and which room they are part of.
 // This makes it easier to remove a player from a lobby if they disconnect
 const socketRooms = {};
 
 io.on("connection", (socket) => {
-    // this runs when client-side js does "socket.emit("joinRoom")
-    socket.on("joinRoom", (response) => {
-        const { passcode, username } = response;
+  // this runs when client-side js does "socket.emit("joinRoom")
+  socket.on("joinRoom", (response) => {
+    const { passcode, username } = response;
 
-        console.log("data received:" + [passcode, username]);
+    console.log("data received:" + [passcode, username]);
 
-        socket.join(passcode);
+    socket.join(passcode);
 
-        if (!games[passcode]) {
-            games[passcode] = new Roomstate(passcode);
-        }
+    if (!games[passcode]) {
+      games[passcode] = new Roomstate(passcode);
+    }
 
-        games[passcode].add_player(username, socket.id);
+    games[passcode].add_player(username, socket.id);
 
-        const game = games[passcode];
-        socketRooms[socket.id] = passcode;
+    const game = games[passcode];
+    socketRooms[socket.id] = passcode;
 
-        // for room "passcode" only, send "game" to the client-side js
-        io.to(passcode).emit("joinRoom", game);
-    });
+    // for room "passcode" only, send "game" to the client-side js
+    io.to(passcode).emit("joinRoom", game);
+  });
 
-    // when the game is started, everyone in the lobby navigates to /game/:gameId
-    //TODO: uses both "players" in gamestate and outside (Should standardize)
-    socket.on("startGame", (passcode) => {
-        games[passcode] = {
-            gamestate: new Gamestate(
-                Object.keys(games[passcode].connection_map).map((x) => games[passcode].connection_map[x].name),
-                "Scrabble"
-            ),
-            roomstate: games[passcode]
-        };
+  // when the game is started, everyone in the lobby navigates to /game/:gameId
+  //TODO: uses both "players" in gamestate and outside (Should standardize)
+  socket.on("startGame", (passcode) => {
+    games[passcode] = {
+      gamestate: new Gamestate(
+        Object.keys(games[passcode].connection_map).map(
+          (x) => games[passcode].connection_map[x].name
+        ),
+        "Scrabble"
+      ),
+      roomstate: games[passcode],
+    };
 
-        io.to(passcode).emit("navigateToGame", passcode);
-    });
+    io.to(passcode).emit("navigateToGame", passcode);
+  });
 
-    // navigates all players to new page
-    socket.on("navigateToGame", (passcode) => {
-        if (games.hasOwnProperty(passcode)) {
-            io.to(passcode).emit("navigateToGame", passcode);
-        }
-    });
+  // navigates all players to new page
+  socket.on("navigateToGame", (passcode) => {
+    if (games.hasOwnProperty(passcode)) {
+      io.to(passcode).emit("navigateToGame", passcode);
+    }
+  });
 
-    // needed to resync players after something like a page change
-    socket.on("resync", (passcode) => {
-        console.log("attempting a resync");
+  // needed to resync players after something like a page change
+  socket.on("resync", (response) => {
+    const { passcode, username } = response;
+    console.log("attempting a resync");
 
-        if (games.hasOwnProperty(passcode)) {
-            // after page navigation, the room is deleted from the socket and needs to be recreated
-            socket.join(passcode);
-            io.to(passcode).emit("resync", passcode);
-            io.to(passcode).emit("updateGamestate", games[passcode]);
-        }
-    });
+    if (games.hasOwnProperty(passcode)) {
+      // after page navigation, the room is deleted from the socket and needs to be recreated
+      socket.join(passcode);
+      io.to(passcode).emit("resync", passcode);
+      io.to(passcode).emit("updateGamestate", games[passcode]);
+    }
+  });
 
-    socket.on("draw", (passcode) => {
-        let this_player = games[passcode].roomstate.connection_map[socket.id];
-        if (this_player.name !== games[passcode].gamestate.active_player.name)
-            return;
+  socket.on("draw", (passcode) => {
+    let this_player = games[passcode].roomstate.connection_map[socket.id];
+    if (this_player.name !== games[passcode].gamestate.active_player.name)
+      return;
 
-        games[passcode].gamestate.draw();
-        io.to(passcode).emit("updateGamestate", games[passcode]);
-    })
+    games[passcode].gamestate.draw();
+    io.to(passcode).emit("updateGamestate", games[passcode]);
+  });
 
-    socket.on("disconnect", () => {
-        console.log(`Client disconnected: ${socket.id}`);
-        if (Object.keys(games).length > 0) {
-            if (io.sockets.adapter.rooms.get(socketRooms[socket.id])) {
-                games[socketRooms[socket.id]]["players"] = Array.from(
-                    io.sockets.adapter.rooms.get(socketRooms[socket.id])
-                );
-                io.to(socketRooms[socket.id]).emit(
-                    "refreshPlayerCount",
-                    games[socketRooms[socket.id]]
-                );
-            }
-            delete socketRooms[socket.id];
-        }
-    });
+  socket.on("disconnect", () => {
+    console.log(`Client disconnected: ${socket.id}`);
+    if (Object.keys(games).length > 0) {
+      if (io.sockets.adapter.rooms.get(socketRooms[socket.id])) {
+        games[socketRooms[socket.id]]["players"] = Array.from(
+          io.sockets.adapter.rooms.get(socketRooms[socket.id])
+        );
+        io.to(socketRooms[socket.id]).emit(
+          "refreshPlayerCount",
+          games[socketRooms[socket.id]]
+        );
+      }
+      delete socketRooms[socket.id];
+    }
+  });
 });
 
 configRoutes(app);
@@ -171,6 +174,6 @@ const insertInfo = await testCollection.insertOne({ test: 2 });
 await closeConnection();*/
 
 server.listen(3000, () => {
-    console.log("We've now got a server!");
-    console.log("Your routes will be running on http://localhost:3000");
+  console.log("We've now got a server!");
+  console.log("Your routes will be running on http://localhost:3000");
 });

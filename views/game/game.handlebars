@@ -3,6 +3,7 @@
   <p>Your game ID is {{gameId}}</p>
   <p id="connected">You are not connected</p>
   <input id="gameId" value={{gameId}} />
+  <input id="username value={{user.usernam}}" />
 
   <p>Current Player:</p>
   <p id="currentPlayer"></p>
@@ -13,8 +14,8 @@
   <button id="drawTileButton">Draw</button>
 
   <form id="guessForm">
-    <input type="text" id="guessWord">
-    <input type="submit" id="guessSubmit">
+    <input type="text" id="guessWord" />
+    <input type="submit" id="guessSubmit" />
   </form>
 
   <script src="/socket.io/socket.io.js"></script>
