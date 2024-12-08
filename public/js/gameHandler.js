@@ -10,6 +10,11 @@ draw_button.addEventListener("click", () => {
 
 guess_form.addEventListener("submit", (event) => {
     event.preventDefault();
+
+    socket.emit("guess", { 
+        guess: document.getElementById("guessWord"),
+        passcode: gameId
+    });
 });
 
 socket.on("updateGamestate", (state) => {

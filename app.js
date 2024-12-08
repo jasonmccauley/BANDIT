@@ -151,6 +151,18 @@ io.on("connection", (socket) => {
         io.to(passcode).emit("updateGamestate", game);
     })
 
+    socket.on("guess", (response) => {
+        const { guess, passcode } = response;
+        const game = games[passcode];
+
+        let this_player = game.roomstate.get_player_by_id(socket.id);
+
+        // todo: get index of player by their roomstate player representation
+        game.gamestate.guess(game.gamestate.players.indexOf(this_player.name), guess);
+
+        io.to(passcode).emit("updateGamestate", game);
+    });
+
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);
     if (Object.keys(games).length > 0) {
