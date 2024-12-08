@@ -5,7 +5,7 @@ let username = document.getElementById("username").value;
 let connection = document.getElementById("connected");
 
 if (!connected) {
-  socket.emit("resync", { gameId, username });
+  socket.emit("resync", { passcode: gameId, username });
   console.log("not connected");
 }
 socket.on("resync", (passcode) => {
