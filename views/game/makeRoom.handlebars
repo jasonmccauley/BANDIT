@@ -1,25 +1,32 @@
+<h1>
+    <p class="tile">B</p>
+    <p class="tile">A</p>
+    <p class="tile">N</p>
+    <p class="tile">D</p>
+    <p class="tile">I</p>
+    <p class="tile">T</p></h1>
 <div class="formContainer">
-  {{#if error}}
-    <p>Error: {{error}}</p>
-  {{/if}}
+    {{#if error}}
+        <p>Error: {{error}}</p>
+    {{/if}}
 
-  <div>
-    <form id="roomForm">
-      <input id="username" value={{user.username}} type="hidden" />
-      <label for="passcode">Enter a passcode to join users with (optional)</label>
-      <input id="passcode" name="passcode" placeholder="passcode" />
+    <div>
+        <form id="roomForm">
+            <input id="username" value={{user.username}} type="hidden" />
+            <label for="passcode">Enter a passcode to join users with (optional)</label>
+            <input id="passcode" name="passcode" placeholder="passcode" />
 
-      <input class="submit" type="submit" value="Search for players!" />
-    </form>
+            <input class="submit" type="submit" value="Search for players!" />
+        </form>
 
-    <p id="roomStatus" class="startHidden"></p>
-    <p id="playerNumber" class="startHidden"></p>
+        <p id="roomStatus" class="startHidden"></p>
+        <p id="playerNumber" class="startHidden"></p>
 
-    <button id="startButton" class="startHidden"> Start the game!</button>
-    <p id="waitForHost" class="startHidden">Waiting for the host to start the
-      game</p>
-  </div>
+        <button id="startButton" class="startHidden"> Start the game!</button>
+        <p id="waitForHost" class="startHidden">Waiting for the host to start
+            the game</p>
+    </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/public/js/searchRoom.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/public/js/searchRoom.js"></script>
 </div>

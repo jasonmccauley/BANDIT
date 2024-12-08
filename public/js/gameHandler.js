@@ -47,7 +47,9 @@ socket.on("updateGamestate", (state) => {
                 <div class="word">${this_word.join("")}</div>
             `);
         }
-        player_words_str += `${gamestate.players[player].name}:<br>
+        player_words_str += `<span class="username_header">${
+            gamestate.players[player].name
+        }</span>:<br>
         ${word_list.join("")}
         <br><br>`;
     }

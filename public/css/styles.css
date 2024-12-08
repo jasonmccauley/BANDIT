@@ -95,9 +95,21 @@ h1 > .tile {
     font-size: larger;
 }
 
-#greeting_username {
+#greeting_username,
+#currentPlayer,
+.username_header {
     color: navy;
     font-weight: bold;
+}
+
+#currentPlayer {
+    font-size: 30px;
+}
+
+#table_tiles_header,
+#words_in_play_header,
+#current_player_header {
+    margin-top: 30px;
 }
 
 /* Buttons */

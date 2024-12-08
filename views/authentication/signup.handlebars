@@ -1,29 +1,36 @@
+<h1>
+    <p class="tile">B</p>
+    <p class="tile">A</p>
+    <p class="tile">N</p>
+    <p class="tile">D</p>
+    <p class="tile">I</p>
+    <p class="tile">T</p></h1>
 <div class="formContainer">
-  {{#if error}}
-    <p>Error: {{error}}</p>
-  {{/if}}
-  <form id="signupForm" action="/users/signup" method="POST">
-    <label for="usernameInput">Enter your username</label>
-    <input id="usernameInput" name="usernameInput" placeholder="username" />
+    {{#if error}}
+        <p>Error: {{error}}</p>
+    {{/if}}
+    <form id="signupForm" action="/users/signup" method="POST">
+        <label for="usernameInput">Enter your username</label>
+        <input id="usernameInput" name="usernameInput" placeholder="username" />
 
-    <label for="passwordInput">Enter your password</label>
-    <input
-      id="passwordInput"
-      name="passwordInput"
-      type="password"
-      placeholder="password"
-    />
+        <label for="passwordInput">Enter your password</label>
+        <input
+            id="passwordInput"
+            name="passwordInput"
+            type="password"
+            placeholder="password"
+        />
 
-    <label for="passwordInput">Reenter your password</label>
-    <input
-      id="reenterPasswordInput"
-      name="reenterPasswordInput"
-      type="password"
-      placeholder="reenter password"
-    />
-    <button type="button" onclick="unhideText()">Show Password</button>
+        <label for="passwordInput">Reenter your password</label>
+        <input
+            id="reenterPasswordInput"
+            name="reenterPasswordInput"
+            type="password"
+            placeholder="reenter password"
+        />
+        <button type="button" onclick="unhideText()">Show Password</button>
 
-    <input class="submit" type="submit" />
-  </form>
-  <script src="/public/js/validateSignup.js"></script>
+        <input class="submit" type="submit" />
+    </form>
+    <script src="/public/js/validateSignup.js"></script>
 </div>
