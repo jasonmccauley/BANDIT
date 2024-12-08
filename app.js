@@ -141,10 +141,13 @@ io.on("connection", (socket) => {
 
     socket.on("draw", (passcode) => {
         const game = games[passcode]
+
+        // check to see if it's your turn
         if (socket.id !== game.roomstate.connection_map[game.gamestate.active_player.name].id)
             return;
 
         game.gamestate.draw();
+        game.gamestate.pass();
         io.to(passcode).emit("updateGamestate", game);
     })
 

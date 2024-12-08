@@ -52,6 +52,16 @@ export class Gamestate {
         return new_tile;
     };
 
+    pass = () => {
+        let idx = this.players.indexOf(this.active_player);
+        idx++;
+
+        if (idx === this.players.length)
+            idx = 0;
+
+        this.active_player = this.players[idx];
+    }
+
     /**
      * Apply the word finding function to verify a guessed word.
      * If it is correct, remove the pertinent table tiles or words and add the new word.
