@@ -72,8 +72,9 @@ app.use("/game", (req, res, next) => {
 
 // stores game state for all games
 import { Gamestate } from "./game/gamestateModel.js";
-import { games } from './routes/game.js'
 import { Roomstate } from "./game/roomstate.js";
+
+const games = {};
 
 // stores each socket id (user) and which room they are part of. 
 // This makes it easier to remove a player from a lobby if they disconnect
@@ -125,7 +126,7 @@ io.on("connection", (socket) => {
     // needed to resync players after something like a page change
     socket.on("resync", (passcode) => {
         console.log("attempting a resync");
-
+        
         if (games.hasOwnProperty(passcode)) {
             // after page navigation, the room is deleted from the socket and needs to be recreated
             socket.join(passcode);
