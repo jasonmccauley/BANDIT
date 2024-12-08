@@ -71,6 +71,10 @@ export class Gamestate {
         this.active_player = this.players[idx];
     };
 
+    pass_to_player = (player) => {
+        this.active_player = player;
+    }
+
     /**
      * Apply the word finding function to verify a guessed word.
      * If it is correct, remove the pertinent table tiles or words and add the new word.
@@ -104,6 +108,7 @@ export class Gamestate {
             }
         }
         this.players[player_index].words.push(word);
+        this.pass_to_player(this.players[player_index]);
         return true;
     };
 
