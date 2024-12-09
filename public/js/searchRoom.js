@@ -44,19 +44,19 @@ socket.on("joinRoom", (response) => {
       room_state = game;
       let roomStatus = document.getElementById("roomStatus");
       roomStatus.style.display = "block";
-      roomStatus.innerHTML = `Room capacity: ${Object.keys(room_state.connection_map).length}/${game["room_size"]}`;
+      roomStatus.innerHTML = `Room capacity: ${
+        Object.keys(room_state.connection_map).length
+      }/${game["room_size"]}`;
 
       let playerNumber = document.getElementById("playerNumber");
       playerNumber.style.display = "block";
-      playerNumber.innerHTML = `You are player number ${
-        game.connection_map[username].player_number
-      }`;
+      playerNumber.innerHTML = `You are player number ${game.connection_map[username].player_number}`;
 
       if (game.connection_map[username].player_number === 1) {
-        startButton.style.display = "block";
+        startButton.hidden = false;
         startButton.href = `/game/${game["passcode"]}`;
-      } else {
-        document.getElementById("waitForHost").style.display = "block";
+      } else if (startButton.hidden) {
+        document.getElementById("waitForHost").hidden = false;
       }
 
       roomForm.style.display = "none";

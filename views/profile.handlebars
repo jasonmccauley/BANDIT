@@ -1,4 +1,4 @@
-<div class="profile-container">
+<div id="profile-container">
   <div class="profile-card">
     <h2>{{foundUser.username}}'s Profile</h2>
     <p>Bio: {{foundUser.bio}}</p>
@@ -10,17 +10,21 @@
   <div id="editProfileFormContainer" class="edit-profile-form hidden">
     <h3>Edit Profile</h3>
     <form id="editProfileForm" action="/users/{{foundUser._id}}" method="POST">
-    <label for="newBio">New Bio:</label>
-    <textarea id="newBio" name="newBio" placeholder="Enter a new bio">{{foundUser.bio}}</textarea>
+      <label for="newBio">New Bio:</label>
+      <textarea
+        id="newBio"
+        name="newBio"
+        placeholder="Enter a new bio"
+      >{{foundUser.bio}}</textarea>
 
-    <label for="newDateOfBirth">New Date of Birth:</label>
-    <input
+      <label for="newDateOfBirth">New Date of Birth:</label>
+      <input
         type="date"
         id="newDateOfBirth"
         name="newDateOfBirth"
         value="{{foundUser.dateOfBirth}}"
       />
-    <button type="submit" class="save-button">Save Changes</button>
+      <button type="submit" class="save-button">Save Changes</button>
     </form>
   </div>
 </div>

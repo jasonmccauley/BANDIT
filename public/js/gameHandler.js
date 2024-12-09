@@ -6,53 +6,53 @@ let current_player = document.getElementById("currentPlayer");
 let current_player_id = document.getElementById("currentPlayerId");
 
 draw_button.addEventListener("click", () => {
-    socket.emit("draw", gameId);
+  socket.emit("draw", gameId);
 });
 
 guess_form.addEventListener("submit", (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    socket.emit("guess", {
-        guess: document.getElementById("guessWord").value,
-        passcode: gameId,
-    });
+  socket.emit("guess", {
+    guess: document.getElementById("guessWord").value,
+    passcode: gameId,
+  });
 });
 
 socket.on("updateGamestate", (state) => {
-    let gamestate = state.gamestate;
+  let gamestate = state.gamestate;
 
-    let active_player_name = gamestate.active_player.name;
+  let active_player_name = gamestate.active_player.name;
 
-    current_player.innerHTML = active_player_name;
+  current_player.innerHTML = active_player_name;
 
-    let tiles = [];
-    for (const tile of gamestate.table_tiles) {
-        tiles.push(`
+  let tiles = [];
+  for (const tile of gamestate.table_tiles) {
+    tiles.push(`
             <p class="tile">${tile.toUpperCase()}</p>
             `);
-    }
+  }
 
-    table_tiles.innerHTML = tiles.join("");
+  table_tiles.innerHTML = tiles.join("");
 
-    let player_words_str = "";
+  let player_words_str = "";
 
-    for (let player in gamestate.players) {
-        let word_list = [];
-        for (const word of gamestate.players[player].words) {
-            let this_word = [];
-            for (const letter of word) {
-                this_word.push(`<p class="tile">${letter.toUpperCase()}</p>`);
-            }
-            word_list.push(`
+  for (let player in gamestate.players) {
+    let word_list = [];
+    for (const word of gamestate.players[player].words) {
+      let this_word = [];
+      for (const letter of word) {
+        this_word.push(`<p class="tile">${letter.toUpperCase()}</p>`);
+      }
+      word_list.push(`
                 <div class="word">${this_word.join("")}</div>
             `);
-        }
-        player_words_str += `<span class="username_header">${
-            gamestate.players[player].name
-        }</span>:<br>
+    }
+    player_words_str += `<span class="username_header">${
+      gamestate.players[player].name
+    }</span>:<br>
         ${word_list.join("")}
         <br><br>`;
-    }
+  }
 
-    words_in_play.innerHTML = player_words_str;
+  words_in_play.innerHTML = player_words_str;
 });

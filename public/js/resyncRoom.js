@@ -8,6 +8,7 @@ if (!connected) {
   socket.emit("resync", { passcode: gameId, username });
   console.log("not connected");
 }
+
 socket.on("resync", (passcode) => {
   console.log("reconnected!");
   socket.emit("updateGamestate", passcode);
