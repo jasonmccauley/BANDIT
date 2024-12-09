@@ -67,7 +67,7 @@ h1 {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-h1 > .tile {
+#banditContainer > .tile {
     animation: jiggle 0.5s ease-in-out infinite;
 }
 
@@ -248,7 +248,7 @@ nav {
 }
 
 /*profile page*/
-.profile-container {
+#profile-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -341,9 +341,5 @@ nav {
     display: none;
 }
 #username {
-    display: none;
-}
-
-.startHidden {
     display: none;
 }

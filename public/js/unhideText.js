@@ -3,7 +3,10 @@ function unhideText() {
   const reenterPasswordInput = document.getElementById("reenterPasswordInput");
   const button = document.querySelector("button");
 
-  if (passwordInput.type === "password" && reenterPasswordInput.type === "password") {
+  if (
+    passwordInput.type === "password" &&
+    reenterPasswordInput.type === "password"
+  ) {
     passwordInput.type = "text";
     reenterPasswordInput.type = "text";
     button.textContent = "Hide Password";
@@ -13,7 +16,7 @@ function unhideText() {
     button.textContent = "Show Password";
   }
 }
-function unhideTextOne(){
+function unhideTextOne() {
   const passwordInput = document.getElementById("passwordInput");
   const button = document.querySelector("button");
 
@@ -34,4 +37,13 @@ function toggleEditProfileMenu() {
   } else {
     editMenu.classList.add("hidden");
   }
+}
+
+if (
+  document.getElementById("profile-container") ||
+  document.getElementById("currentPlayer")
+) {
+  $("#banditContainer").attr("hidden", true);
+} else {
+  $("#banditContainer").attr("hidden", false);
 }

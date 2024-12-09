@@ -1,26 +1,38 @@
-<div class="profile-container">
+<div id="profile-container">
   <div class="profile-card">
     <h2>{{foundUser.username}}'s Profile</h2>
     <p>Bio: {{foundUser.bio}}</p>
     <p>Date of Birth: {{foundUser.dateOfBirth}}</p>
     <p>Games Played: {{foundUser.gamesPlayed}}</p>
     <p>Games Won: {{foundUser.gamesWon}}</p>
-    <button onclick="toggleEditProfileMenu()" class="edit-button">Edit Profile</button>
+    {{#if (isEqual foundUser._id user.id)}}
+      <button onclick="toggleEditProfileMenu()" class="edit-button">Edit Profile</button>
+    {{/if}}
   </div>
-  <div id="editProfileFormContainer" class="edit-profile-form hidden">
-    <h3>Edit Profile</h3>
-    <form id="editProfileForm" action="/users/{{foundUser._id}}" method="POST">
-    <label for="newBio">New Bio:</label>
-    <textarea id="newBio" name="newBio" placeholder="Enter a new bio">{{foundUser.bio}}</textarea>
+  {{#if (isEqual foundUser._id user.id)}}
+    <div id="editProfileFormContainer" class="edit-profile-form hidden">
+      <h3>Edit Profile</h3>
+      <form
+        id="editProfileForm"
+        action="/users/{{foundUser._id}}"
+        method="POST"
+      >
+        <label for="newBio">New Bio:</label>
+        <textarea
+          id="newBio"
+          name="newBio"
+          placeholder="Enter a new bio"
+        >{{foundUser.bio}}</textarea>
 
-    <label for="newDateOfBirth">New Date of Birth:</label>
-    <input
-        type="date"
-        id="newDateOfBirth"
-        name="newDateOfBirth"
-        value="{{foundUser.dateOfBirth}}"
-      />
-    <button type="submit" class="save-button">Save Changes</button>
-    </form>
-  </div>
+        <label for="newDateOfBirth">New Date of Birth:</label>
+        <input
+          type="date"
+          id="newDateOfBirth"
+          name="newDateOfBirth"
+          value="{{foundUser.dateOfBirth}}"
+        />
+        <button type="submit" class="save-button">Save Changes</button>
+      </form>
+    </div>
+  {{/if}}
 </div>

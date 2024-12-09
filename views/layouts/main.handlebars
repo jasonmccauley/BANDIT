@@ -1,47 +1,53 @@
+<!--UNCOMMENT LINE 2 BEFORE SUBMITTING!-->
+<!--<!DOCTYPE html>-->
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>BANDIT</title>
-        <link rel="stylesheet" href="/public/css/styles.css" />
-    </head>
-    <body>
-        <main>
-            <nav>
-                <div class="nav-left">
-                    {{#if (isValidObject user)}}
-                        <a href="/game" class="nav-link">Start Playing Now</a>
-                    {{else}}
-                        <a href="/users/login" class="nav-link">Login</a>
-                        <a href="/users/signup" class="nav-link">Sign Up</a>
-                    {{/if}}
-                </div>
-                <div class="nav-right">
-                    {{#if (isValidObject user)}}
-                        <a
-                            href="/users/{{user.id}}"
-                            class="nav-link profile-button"
-                        >User Profile</a>
-                        <a
-                            href="/users/logout"
-                            class="nav-link logout-button"
-                        >Logout</a>
-                    {{/if}}
-                </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BANDIT</title>
+    <link rel="stylesheet" href="/public/css/styles.css" />
+  </head>
+  <body>
+    <script
+      src="https://code.jquery.com/jquery-2.2.4.min.js"
+      integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+      crossorigin="anonymous"
+    ></script>
+    <main>
+      <nav>
+        <div class="nav-left">
+          {{#if (isValidObject user)}}
+            <a href="/game" class="nav-link">Start Playing Now</a>
+          {{else}}
+            <a href="/users/login" class="nav-link">Login</a>
+            <a href="/users/signup" class="nav-link">Sign Up</a>
+          {{/if}}
+        </div>
+        <div class="nav-right">
+          {{#if (isValidObject user)}}
+            <a href="/users/{{user.id}}" class="nav-link profile-button">User
+              Profile</a>
+            <a href="/users/logout" class="nav-link logout-button">Logout</a>
+          {{/if}}
+        </div>
 
-            </nav>
-            {{#if (isValidObject user)}}
-                <p id="greeting">You are logged in as
-                    <span id="greeting_username">{{user.username}}</span>.</p>
-            {{/if}}
-            {{{body}}}
-            {{#if account}}{{else}}
-                {{#if game}}{{else}}
-                    <a href="/game">Start playing now!</a>
-                {{/if}}
-            {{/if}}
-        </main>
-        <script src="/public/js/unhideText.js"></script>
-        <script src="/public/js/disconnectWarning.js"></script>
-    </body>
+      </nav>
+      {{#if (isValidObject user)}}
+        <p id="greeting">You are logged in as
+          <span id="greeting_username">{{user.username}}</span>.</p>
+      {{/if}}
+      <div id="banditContainer">
+        <p class="tile">B</p>
+        <p class="tile">A</p>
+        <p class="tile">N</p>
+        <p class="tile">D</p>
+        <p class="tile">I</p>
+        <p class="tile">T</p>
+      </div>
+      {{{body}}}
+
+    </main>
+    <script src="/public/js/unhideText.js"></script>
+    <script src="/public/js/disconnectWarning.js"></script>
+  </body>
 </html>
