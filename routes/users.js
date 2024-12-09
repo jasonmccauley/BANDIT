@@ -73,26 +73,31 @@ router
     }
   });
 
-router.route("/:userId")
-.get(async (req, res) => {
-  try {
-    let user = await usersData.getUserById(req.params.userId);
-    res.render("profile", { foundUser: user, user: req.session.user });
-  } catch (e) {
-    res.status(404).render("authentication/error", {
-      user: req.session.user,
-      error: e.message,
-    });
-  }
-})//updating of profile done as a post request instead of a patch as HTML does not support patch requests
-.post(async (req, res) =>{
-  try{
-    const userId = req.params.userId;
-    const { newBio, newDateOfBirth } = req.body;
-    const updatedUser = await usersData.updateUserProfile(userId, newBio, newDateOfBirth);
-    res.redirect(`/users/${userId}`); //reroute back to the users profile after sucessfully updating
-  } catch (e) {
-    res.status(400).json({ error: e.message });
-  }
-});
+router
+  .route("/:userId")
+  .get(async (req, res) => {
+    try {
+      let user = await usersData.getUserById(req.params.userId);
+      res.render("profile", { foundUser: user, user: req.session.user });
+    } catch (e) {
+      res.status(404).render("authentication/error", {
+        user: req.session.user,
+        error: e.message,
+      });
+    }
+  }) //updating of profile done as a post request instead of a patch as HTML does not support patch requests
+  .post(async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const { newBio, newDateOfBirth } = req.body;
+      const updatedUser = await usersData.updateUserProfile(
+        userId,
+        newBio,
+        newDateOfBirth
+      );
+      res.redirect(`/users/${userId}`); //reroute back to the users profile after sucessfully updating
+    } catch (e) {
+      res.status(400).json({ error: e.message });
+    }
+  });
 export default router;
