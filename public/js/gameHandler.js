@@ -3,7 +3,7 @@ let table_tiles = document.getElementById("tableTiles");
 let words_in_play = document.getElementById("wordsInPlay");
 let guess_form = document.getElementById("guessForm");
 let current_player = document.getElementById("currentPlayer");
-let current_player_id = document.getElementById("currentPlayerId");
+const this_user = document.getElementById("username").value;
 
 draw_button.addEventListener("click", () => {
     socket.emit("draw", gameId);
@@ -16,6 +16,8 @@ guess_form.addEventListener("submit", (event) => {
         guess: document.getElementById("guessWord").value,
         passcode: gameId,
     });
+
+    document.getElementById("guessWord").value = "";
 });
 
 socket.on("updateGamestate", (state) => {
@@ -24,6 +26,8 @@ socket.on("updateGamestate", (state) => {
     let active_player_name = gamestate.active_player.name;
 
     current_player.innerHTML = active_player_name;
+
+    draw_button.disabled = !(this_user === gamestate.active_player.name);
 
     let tiles = [];
     for (const tile of gamestate.table_tiles) {

@@ -1,7 +1,5 @@
-import fs from "node:fs";
 import { bananagrams_deck } from "./letterDeck.js";
 import { word_is_valid, construct_word } from "./helpers_gameLogic.js";
-import { dictionaries } from "../config/mongoCollections.js";
 
 // reverse fisher-yates shuffle
 const shuffle = (deck) => {
@@ -16,7 +14,7 @@ const shuffle = (deck) => {
 export class Gamestate {
     constructor(player_names, dictionary_name) {
         this.deck = Gamestate.initialize_letter_deck(bananagrams_deck);
-        this.dictionary = null;
+        this.dictionary = dictionary_name;
         this.table_tiles = [];
         this.players = shuffle(
             player_names.map((name) => new Gamestate.Player(name))
@@ -73,7 +71,7 @@ export class Gamestate {
 
     pass_to_player = (player) => {
         this.active_player = player;
-    }
+    };
 
     /**
      * Apply the word finding function to verify a guessed word.
@@ -88,7 +86,7 @@ export class Gamestate {
 
         // If the word is not in the dictionary, reject it.
         word = word.toLowerCase();
-        const valid_word = word_is_valid(word, this.dictionary);
+        const valid_word = await word_is_valid(word, this.dictionary);
         if (!valid_word) return false;
         const player_words = this.players.flatMap((player) => player.words);
 
@@ -133,17 +131,5 @@ export class Gamestate {
         }
 
         return shuffle(deck);
-    };
-
-    /**
-     * @param {string} dictionary_name
-     * @returns {object} The dictionary object with the given name.
-     */
-    load_dictionary = async (dictionary_name) => {
-        const dictCollection = await dictionaries();
-        this.dictionary = await dictCollection.findOne({
-            name: dictionary_name,
-        });
-        return this.dictionary;
     };
 }

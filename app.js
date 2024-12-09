@@ -110,12 +110,11 @@ io.on("connection", (socket) => {
     socket.on("startGame", async (passcode) => {
         games[passcode] = {
             gamestate: new Gamestate(
-                Object.keys(games[passcode].connection_map)
+                Object.keys(games[passcode].connection_map),
+                "Scrabble"
             ),
             roomstate: games[passcode],
         };
-
-        await games[passcode].gamestate.load_dictionary("Scrabble");
 
         io.to(passcode).emit("navigateToGame", passcode);
     });
