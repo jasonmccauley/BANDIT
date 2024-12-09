@@ -128,6 +128,14 @@ button:hover {
   background: #45a049;
 }
 
+button:disabled {
+  background-color: rgb(170, 170, 170);
+}
+
+button:disabled:hover {
+  cursor: default;
+}
+
 .submit {
   padding: 10px 15px;
   border: none;
@@ -138,8 +146,10 @@ button:hover {
   cursor: pointer;
 }
 
-.submit:hover {
+#guessSubmit:hover {
   background: #0056b3;
+  color: white;
+  cursor: pointer;
 }
 
 /* Form Container */
@@ -175,6 +185,11 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+#drawTileButton {
+  width: 25%;
+  margin-bottom: 30px;
 }
 
 /* Profile */
