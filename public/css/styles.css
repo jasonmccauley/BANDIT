@@ -86,6 +86,8 @@ h1 > .tile {
 .word:hover .tile {
     transform: translateY(-5px); /* Makes it "pop" upward */
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+
+    cursor: none;
 }
 
 #greeting {

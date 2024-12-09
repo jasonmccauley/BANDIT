@@ -21,6 +21,7 @@ export class Gamestate {
         );
         this.active_player = this.players[0];
         this.turn_number = 0;
+        this.ongoing = true;
     }
 
     static Player = class {
@@ -36,6 +37,17 @@ export class Gamestate {
          */
         add_word = (word) => {
             this.words.push(word);
+        };
+
+        /**
+         * @returns {int} The player's score.
+         */
+        score = () => {
+            let score = 0;
+            for (const word of this.words) {
+                score += word.length;
+            }
+            return score;
         };
     };
 
@@ -54,6 +66,10 @@ export class Gamestate {
      * @returns {string} The letter of the new tile.
      */
     draw = () => {
+        if (this.deck.length === 0) {
+            this.ongoing = false;
+        }
+
         let new_tile = this.deck.pop();
         this.table_tiles.push(new_tile);
         this.turn_number++;
