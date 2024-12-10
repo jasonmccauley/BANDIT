@@ -4,7 +4,12 @@
   {{/if}}
   <form id="signupForm" action="/users/signup" method="POST">
     <label for="usernameInput">Enter your username</label>
-    <input id="usernameInput" name="usernameInput" placeholder="username" />
+    <input
+      id="usernameInput"
+      name="usernameInput"
+      placeholder="username"
+      required
+    />
 
     <label for="passwordInput">Enter your password</label>
     <input
@@ -12,6 +17,7 @@
       name="passwordInput"
       type="password"
       placeholder="password"
+      required
     />
 
     <label for="passwordInput">Reenter your password</label>
@@ -20,8 +26,11 @@
       name="reenterPasswordInput"
       type="password"
       placeholder="reenter password"
+      required
     />
     <button type="button" onclick="unhideText()">Show Password</button>
+
+    <input id="birthdayInput" name="birthdayInput" type="date" required />
 
     <input class="submit" type="submit" />
   </form>

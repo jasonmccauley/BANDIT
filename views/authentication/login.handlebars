@@ -4,7 +4,12 @@
   {{/if}}
   <form id="loginForm" action="/users/login" method="POST">
     <label for="usernameInput">Enter your username</label>
-    <input id="usernameInput" name="usernameInput" placeholder="username" />
+    <input
+      id="usernameInput"
+      name="usernameInput"
+      placeholder="username"
+      required
+    />
 
     <label for="passwordInput">Enter your password</label>
 
@@ -13,9 +18,11 @@
       name="passwordInput"
       type="password"
       placeholder="password"
+      required
     />
     <button type="button" onclick="unhideTextOne()">Show Password</button>
 
     <input class="submit" type="submit" />
   </form>
+  <script src="/public/js/validateForm.js"></script>
 </div>
