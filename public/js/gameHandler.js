@@ -41,13 +41,23 @@ socket.on("updateGamestate", (state) => {
 
         let player_words_str = "";
 
+        const colors = [
+            "rgb(241, 213, 123)",
+            "lightblue",
+            "lightgreen",
+            "lightsalmon",
+        ];
+
+        let i = 0;
         for (let player in gamestate.players) {
             let word_list = [];
             for (const word of gamestate.players[player].words) {
                 let this_word = [];
                 for (const letter of word) {
                     this_word.push(
-                        `<p class="tile">${letter.toUpperCase()}</p>`
+                        `<p class="tile" style="background-color: ${
+                            colors[i]
+                        }">${letter.toUpperCase()}</p>`
                     );
                 }
                 word_list.push(`
@@ -59,6 +69,7 @@ socket.on("updateGamestate", (state) => {
             }</span>:<br>
         ${word_list.join("")}
         <br><br>`;
+            i++;
         }
 
         words_in_play.innerHTML = player_words_str;

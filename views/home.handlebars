@@ -1,5 +1,44 @@
 {{#if account}}{{else}}
-  {{#if game}}{{else}}
-    <a href="/game">Start playing now!</a>
-  {{/if}}
+    {{#if game}}{{else}}
+        <a href="/game">Start playing now!</a>
+
+        <div id="howToPlay">
+            <h3 id="howToPlayHeader">How to Play</h3>
+
+            <p>BANDIT is a real-time word game between at least two players.</p>
+
+            <p>Players will take turn drawing tiles from the bag and turning
+                them face up.</p>
+
+            <p class="tile">T</p>
+            <p class="tile">V</p>
+            <p class="tile">A</p>
+            <p class="tile">C</p>
+
+            <p>As soon as a word consisting of at least three letters can be
+                made, any player can claim that word by guessing it.</p>
+
+            <div class="word">
+                <p class="tile">C</p>
+                <p class="tile">A</p>
+                <p class="tile">T</p>
+            </div>
+
+            <p>However, the gimmick of BANDIT is that with clever wordplay, you
+                can steal any other player's words. If you can add letters to an
+                existing word, whether by adding free tiles or combining words,
+                you can take that word!</p>
+
+            <div class="word">
+                <p class="tile stolen">T</p>
+                <p class="tile stolen">R</p>
+                <p class="tile">A</p>
+                <p class="tile stolen">C</p>
+                <p class="tile">K</p>
+            </div>
+
+            <p>Whoever has the greatest number of letter tiles when the game
+                ends is the winner.</p>
+        </div>
+    {{/if}}
 {{/if}}
