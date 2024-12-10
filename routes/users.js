@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { usersData } from "../data/index.js";
+import * as validation from "../validation.js";
+import xss from "xss";
 
 const router = Router();
 
@@ -14,6 +16,21 @@ router
   })
   .post(async (req, res) => {
     try {
+      // sanitize req.body
+      for (let field in req.body) {
+        req.body[field] = xss(req.body[field]);
+      }
+
+      validation.doesExist(req.body.usernameInput);
+      validation.doesExist(req.body.passwordInput);
+
+      req.body.usernameInput = validation.isProperString(
+        req.body.usernameInput
+      );
+      req.body.passwordInput = validation.isProperString(
+        req.body.passwordInput
+      );
+
       const { usernameInput, passwordInput } = req.body;
 
       let validCredentials = await usersData.isPasswordCorrect(
@@ -55,11 +72,48 @@ router
   })
   .post(async (req, res) => {
     try {
-      const { usernameInput, passwordInput } = req.body;
+      validation.doesExist(req.body);
+
+      // sanitize req.body
+      for (let field in req.body) {
+        req.body[field] = xss(req.body[field]);
+      }
+
+      validation.doesExist(req.body.usernameInput);
+      validation.doesExist(req.body.passwordInput);
+      validation.doesExist(req.body.reenterPasswordInput);
+      validation.doesExist(req.body.birthdayInput);
+
+      req.body.usernameInput = validation.isProperString(
+        req.body.usernameInput
+      );
+      req.body.passwordInput = validation.isProperString(
+        req.body.passwordInput
+      );
+      req.body.reenterPasswordInput = validation.isProperString(
+        req.body.reenterPasswordInput
+      );
+      req.body.birthdayInput = validation.isProperString(
+        req.body.birthdayInput
+      );
+
+      let age = validation.isValidDate(req.body.birthdayInput);
+
+      if (age < 13) {
+        throw new Error(
+          "Children younger than 13 are not allowed due to COPPA"
+        );
+      }
+      if (req.body.passwordInput !== req.body.reenterPasswordInput) {
+        throw new Error("Passwords do not match");
+      }
+
+      const { usernameInput, passwordInput, birthdayInput } = req.body;
 
       let createdUser = await usersData.createUser(
         usernameInput,
-        passwordInput
+        passwordInput,
+        birthdayInput
       );
       req.session.user = {
         username: createdUser["username"],
@@ -78,6 +132,8 @@ router
   .get(async (req, res) => {
     try {
       let user = await usersData.getUserById(req.params.userId);
+      delete user.password;
+
       res.render("profile", { foundUser: user, user: req.session.user });
     } catch (e) {
       res.status(404).render("authentication/error", {
@@ -88,13 +144,13 @@ router
   }) //updating of profile done as a post request instead of a patch as HTML does not support patch requests
   .post(async (req, res) => {
     try {
-      const userId = req.params.userId;
-      const { newBio, newDateOfBirth } = req.body;
-      const updatedUser = await usersData.updateUserProfile(
-        userId,
-        newBio,
-        newDateOfBirth
-      );
+      // sanitize req.body
+      for (let field in req.body) {
+        req.body[field] = xss(req.body[field]);
+      }
+      const userId = xss(req.params.userId);
+      const { newBio } = req.body;
+      const updatedUser = await usersData.updateUserProfile(userId, newBio);
       res.redirect(`/users/${userId}`); //reroute back to the users profile after sucessfully updating
     } catch (e) {
       res.status(400).json({ error: e.message });

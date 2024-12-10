@@ -23,16 +23,9 @@
           name="newBio"
           placeholder="Enter a new bio"
         >{{foundUser.bio}}</textarea>
-
-        <label for="newDateOfBirth">New Date of Birth:</label>
-        <input
-          type="date"
-          id="newDateOfBirth"
-          name="newDateOfBirth"
-          value="{{foundUser.dateOfBirth}}"
-        />
         <button type="submit" class="save-button">Save Changes</button>
       </form>
     </div>
   {{/if}}
+  <script src="/public/js/validateForm.js"></script>
 </div>

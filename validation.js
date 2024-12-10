@@ -60,4 +60,37 @@ export function isValidObjectId(id) {
 // check if date is valid
 export function isValidDate(date) {
   if (isNaN(new Date(date))) throw new Error("invalid date");
+
+  hasValidLength(date, 10);
+
+  let inputDate = new Date(date);
+
+  /*
+  yyyy-mm-dd
+
+  year = substring(0,4)
+  month = substring(5,7)
+  day = substring(8,10)
+  */
+
+  if (
+    inputDate.getFullYear() !== parseInt(date.substring(0, 4)) ||
+    inputDate.getMonth() + 1 !== parseInt(date.substring(5, 7)) ||
+    inputDate.getUTCDate() !== parseInt(date.substring(8))
+  ) {
+    throw new Error("invalid date");
+  }
+
+  let currentDate = new Date();
+
+  let age = currentDate.getFullYear() - inputDate.getFullYear();
+  let monthDifference = currentDate.getMonth() - inputDate.getMonth();
+
+  if (
+    monthDifference < 0 ||
+    (monthDifference === 0 && currentDate.getDate() < inputDate.getUTCDate())
+  ) {
+    age--;
+  }
+  return age;
 }

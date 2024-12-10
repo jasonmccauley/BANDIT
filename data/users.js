@@ -6,12 +6,21 @@ import * as validation from "../validation.js";
 const saltRounds = 10;
 
 // adds a user to the user collection and returns the created user as an object
-export const createUser = async (username, password) => {
+export const createUser = async (username, password, birthday) => {
   validation.doesExist(username);
   username = validation.isProperString(username);
 
   validation.doesExist(password);
   password = validation.isProperString(password);
+
+  validation.doesExist(birthday);
+  birthday = validation.isProperString(birthday);
+
+  let age = validation.isValidDate(birthday);
+
+  if (age < 13) {
+    throw new Error("Children younger than 13 are not allowed due to COPPA");
+  }
 
   let allUsers = await getAllUsers();
   let allUsernames = allUsers.map((user) => user["username"]);
@@ -20,11 +29,15 @@ export const createUser = async (username, password) => {
     throw new Error("username is already taken");
   }
   let hash = await bcrypt.hash(password, saltRounds);
+  birthday = new Date(birthday);
+
   let newUser = {
     username: username.toLowerCase(),
     password: hash,
     bio: "No description",
-    dateOfBirth: new Date(),
+    dateOfBirth: `${
+      birthday.getMonth() + 1
+    }/${birthday.getDate()}/${birthday.getFullYear()}`,
     gamesPlayed: 0,
     gamesWon: 0,
   };
@@ -105,21 +118,17 @@ export const isPasswordCorrect = async (username, enteredPassword) => {
 };
 
 //checks updated bio and DOB for user and updates it in the DB
-export const updateUserProfile = async (id, newBio, newDateOfBirth) => {
+export const updateUserProfile = async (id, newBio) => {
   validation.doesExist(id);
   id = validation.isProperString(id);
   id = validation.isValidObjectId(id);
   validation.doesExist(newBio);
   newBio = validation.isProperString(newBio);
 
-  if (!newDateOfBirth || isNaN(new Date(newDateOfBirth).getTime())) {
-    throw new Error("Invalid date of birth: Must be a valid date.");
-  }
-
   const userCollection = await users();
   const updatedInfo = await userCollection.updateOne(
     { _id: new ObjectId(id) },
-    { $set: { bio: newBio, dateOfBirth: newDateOfBirth } }
+    { $set: { bio: newBio } }
   );
   if (updatedInfo.modifiedCount === 0) {
     throw new Error("Could not update the profile. Please try again.");
