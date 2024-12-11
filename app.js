@@ -182,7 +182,7 @@ io.on("connection", (socket) => {
     io.to(passcode).emit("updateGamestate", game);
   });
 
-  socket.on("guess", (response) => {
+  socket.on("guess", async (response) => {
     const { guess, passcode } = response;
     const game = games[passcode];
 
@@ -190,9 +190,13 @@ io.on("connection", (socket) => {
     let this_player = game.gamestate.get_player_by_name(this_room_player.name);
 
     // todo: get index of player by their roomstate player representation
-    game.gamestate.guess(game.gamestate.get_player_index(this_player), guess);
+    await game.gamestate.guess(
+      game.gamestate.get_player_index(this_player),
+      guess
+    );
+    console.log(game.gamestate);
 
-    io.to(passcode).emit("updateGamestate", game);
+    io.to(passcode).emit("updateGamestate", { gamestate: game.gamestate });
   });
 
   socket.on("disconnect", () => {
