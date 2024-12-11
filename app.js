@@ -93,22 +93,37 @@ io.on("connection", (socket) => {
 
     console.log("data received:" + [passcode, username]);
 
-    socket.join(passcode);
-
     if (!games[passcode]) {
       games[passcode] = new Roomstate(passcode);
     }
+    if (
+      games[passcode].hasOwnProperty("gamestate") &&
+      games[passcode].hasOwnProperty("roomstate")
+    ) {
+      socket.emit(
+        "error",
+        "Game has already started, please enter a different code"
+      );
+    } else if (games[passcode].is_full()) {
+      socket.emit("error", "The game is full, please enter a different code");
+    } else if (games[passcode].get_player_by_name(username)) {
+      socket.emit(
+        "error",
+        "You're already in this game, you can't play against yourself"
+      );
+    } else {
+      socket.join(passcode);
+      games[passcode].add_player(username, socket.id);
 
-    games[passcode].add_player(username, socket.id);
+      const game = games[passcode];
+      socketRooms[socket.id] = passcode;
 
-    const game = games[passcode];
-    socketRooms[socket.id] = passcode;
-
-    // for room "passcode" only, send "game" to the client-side js
-    io.to(passcode).emit("joinRoom", {
-      game: game,
-      username: username,
-    });
+      // for room "passcode" only, send "game" to the client-side js
+      io.to(passcode).emit("joinRoom", {
+        game: game,
+        username: username,
+      });
+    }
   });
 
   // when the game is started, everyone in the lobby navigates to /game/:gameId
@@ -121,7 +136,6 @@ io.on("connection", (socket) => {
       ),
       roomstate: games[passcode],
     };
-
     io.to(passcode).emit("navigateToGame", passcode);
   });
 
@@ -138,11 +152,18 @@ io.on("connection", (socket) => {
     console.log("attempting a resync");
 
     if (games.hasOwnProperty(passcode)) {
-      // after page navigation, the room is deleted from the socket and needs to be recreated
-      socket.join(passcode);
-      games[passcode].roomstate.connection_map[username].id = socket.id;
-      io.to(passcode).emit("resync", passcode);
-      io.to(passcode).emit("updateGamestate", games[passcode]);
+      // check if user is part of this game
+      if (!games[passcode].roomstate.get_player_by_name(username)) {
+        socket.emit("error", "You aren't part of this game");
+      } else {
+        // after page navigation, the room is deleted from the socket and needs to be recreated
+        socket.join(passcode);
+        games[passcode].roomstate.connection_map[username].id = socket.id;
+        io.to(passcode).emit("resync", passcode);
+        io.to(passcode).emit("updateGamestate", games[passcode]);
+      }
+    } else {
+      socket.emit("error", "Game does not exist");
     }
   });
 

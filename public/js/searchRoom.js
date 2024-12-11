@@ -43,14 +43,16 @@ socket.on("joinRoom", (response) => {
     if (Object.keys(game.connection_map).length < game["room_size"]) {
       room_state = game;
       let roomStatus = document.getElementById("roomStatus");
-      roomStatus.style.display = "block";
+      roomStatus.hidden = false;
       roomStatus.innerHTML = `Room capacity: ${
         Object.keys(room_state.connection_map).length
       }/${game["room_size"]}`;
 
       let playerNumber = document.getElementById("playerNumber");
-      playerNumber.style.display = "block";
-      playerNumber.innerHTML = `You are player number ${game.connection_map[username].player_number}`;
+      playerNumber.hidden = false;
+      playerNumber.innerHTML = `You are player number ${
+        game.connection_map[$("#username").val()].player_number
+      }`;
 
       if (game.connection_map[username].player_number === 1) {
         startButton.hidden = false;
@@ -59,7 +61,7 @@ socket.on("joinRoom", (response) => {
         document.getElementById("waitForHost").hidden = false;
       }
 
-      roomForm.style.display = "none";
+      $("#roomFormDiv").attr("hidden", true);
 
       window.isConnected = true;
     } else {
@@ -89,7 +91,13 @@ socket.on("refreshPlayerCount", (game) => {
 
   let playerNumber = document.getElementById("playerNumber");
   playerNumber.innerHTML = `You are player number ${
-    game["players"].indexOf(socket.id) + 1
+    game.connection_map[$("#username").val()].player_number
   }`;
   console.log(game);
+});
+
+// displays socket error
+socket.on("error", (message) => {
+  $("#roomFormError").html(`Error: ${message}`);
+  $("#roomFormError").attr("hidden", false);
 });

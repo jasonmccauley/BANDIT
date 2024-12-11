@@ -1,17 +1,19 @@
 <div class="formContainer">
   {{#if error}}
-    <p>Error: {{error}}</p>
+    <p class="error">Error: {{error}}</p>
   {{/if}}
 
   <div>
-    <form id="roomForm">
-      <input id="username" value={{user.username}} type="hidden" />
-      <label for="passcode">Enter a passcode to join users with (optional)</label>
-      <input id="passcode" name="passcode" placeholder="passcode" />
+    <div id="roomFormDiv">
+      <p id="roomFormError" class="error" hidden></p>
+      <form id="roomForm">
+        <input id="username" value={{user.username}} hidden />
+        <label for="passcode">Enter a passcode to join users with (optional)</label>
+        <input id="passcode" name="passcode" placeholder="passcode" />
 
-      <input class="submit" type="submit" value="Search for players!" />
-    </form>
-
+        <input class="submit" type="submit" value="Search for players!" />
+      </form>
+    </div>
     <p id="roomStatus" hidden></p>
     <p id="playerNumber" hidden></p>
 
