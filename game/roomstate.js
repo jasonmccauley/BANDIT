@@ -37,4 +37,12 @@ export class Roomstate {
   is_full = () => {
     return Object.keys(this.connection_map).length === 5;
   };
+
+  get_passcode = () => {
+    return this.passcode;
+  };
+
+  get_player_count = () => {
+    return Object.keys(this.connection_map).length;
+  };
 }

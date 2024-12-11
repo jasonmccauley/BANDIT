@@ -1,6 +1,48 @@
 // this is client-side code to join a room to play the game
 const socket = io();
 
+function bindEventsLink(link) {
+  link.find("a").on("click", function (event) {
+    event.preventDefault();
+    username = document.getElementById("username").value;
+
+    let currentLink = $(this);
+    let currentId = currentLink.data("id");
+
+    socket.emit("joinRoom", {
+      passcode: currentId,
+      username: username,
+    });
+  });
+}
+
+function refreshRoomList() {
+  $("#refreshStatus").attr("hidden", true);
+  $("#roomList").attr("hidden", true);
+  $("#roomList").html("");
+  let requestConfig = {
+    method: "GET",
+    url: "http://localhost:3000/api/rooms",
+    headers: {
+      ajax: "true",
+    },
+  };
+  $.ajax(requestConfig).then(function (responseMessage) {
+    if (!Array.isArray(responseMessage) || responseMessage.length === 0) {
+      $("#refreshStatus").html("No open lobbies");
+      $("#refreshStatus").attr("hidden", false);
+    } else {
+      responseMessage.forEach((openRoom) => {
+        $("#roomList").append(
+          `<li class="openRoom">Room: ${openRoom.passcode} Player Count: ${openRoom.playerCount}/5 <a data-id="${openRoom.passcode}" href='javascript:void(0)'>Join</li>`
+        );
+      });
+      bindEventsLink($($("#roomList")[$("#roomList").length - 1]));
+      $("#roomList").attr("hidden", false);
+    }
+  });
+}
+
 let passcode, username, roomForm, startButton;
 let room_state;
 
@@ -34,12 +76,21 @@ startButton.addEventListener("click", () => {
   }
 });
 
+// updates the list of available rooms
+refreshRoomList();
+
+$("#refreshRoomList").on("click", (event) => {
+  event.preventDefault();
+  refreshRoomList();
+});
+
 // this is triggered when app.js does io.to(passcode).emit("joinRoom", someData)
 socket.on("joinRoom", (response) => {
   const { game, username } = response;
   if (game) {
     console.log(game);
 
+    $("#roomListDiv").attr("hidden", true);
     if (Object.keys(game.connection_map).length < game["room_size"]) {
       room_state = game;
       let roomStatus = document.getElementById("roomStatus");

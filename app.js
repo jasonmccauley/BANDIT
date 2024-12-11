@@ -76,11 +76,20 @@ app.use("/game", (req, res, next) => {
   }
 });
 
+// prevents user from accessing api routes
+app.use("/api", (req, res, next) => {
+  if (req.headers["ajax"] === "true") {
+    next();
+  } else {
+    return res.redirect("/");
+  }
+});
+
 // stores game state for all games
 import { Gamestate } from "./game/gamestateModel.js";
 import { Roomstate } from "./game/roomstate.js";
 
-const games = {};
+export const games = { 1234: new Roomstate("1234") };
 
 // stores each socket id (user) and which room they are part of.
 // This makes it easier to remove a player from a lobby if they disconnect
@@ -89,7 +98,8 @@ const socketRooms = {};
 io.on("connection", (socket) => {
   // this runs when client-side js does "socket.emit("joinRoom")
   socket.on("joinRoom", (response) => {
-    const { passcode, username } = response;
+    let { passcode, username } = response;
+    passcode = passcode.toString();
 
     console.log("data received:" + [passcode, username]);
 

@@ -19,6 +19,13 @@
 
     <button id="startButton" hidden> Start the game!</button>
     <p id="waitForHost" hidden>Waiting for the host to start the game</p>
+
+    <div id="roomListDiv">
+      <h3>List of Open Rooms</h3>
+      <a id="refreshRoomList" href="javascript:void(0)">Refresh Room List</a>
+      <p id="refreshStatus" hidden></p>
+      <ul id="roomList" hidden></ul>
+    </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>

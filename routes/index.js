@@ -3,11 +3,13 @@ import { static as staticDir } from "express";
 import mainRoutes from "./main.js";
 import userRoutes from "./users.js";
 import gameRoutes from "./game.js";
+import apiRoutes from "./api.js";
 
 const constructorMethod = (app) => {
   app.use("/", mainRoutes);
   app.use("/users", userRoutes);
   app.use("/game", gameRoutes);
+  app.use("/api", apiRoutes);
   app.use("/public", staticDir("public"));
   app.use("*", (req, res) => {
     // change this to redirect or a new "404" page not found screen
