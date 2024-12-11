@@ -136,3 +136,41 @@ export const updateUserProfile = async (id, newBio) => {
   const updatedUser = await userCollection.findOne({ _id: new ObjectId(id) });
   return updatedUser;
 };
+
+export const updateGamesWon = async (username) => {
+  validation.doesExist(username);
+  username = validation.isProperString(username);
+
+  username = username.toLowerCase();
+
+  const user = getUserByUsername(username);
+
+  const userCollection = await users();
+  const updatedInfo = await userCollection.updateOne(
+    { _id: new ObjectId(user._id) },
+    { $set: { gamesWon: user.gamesWon + 1 } }
+  );
+  if (updatedInfo.modifiedCount === 0) {
+    throw new Error("Could not update the games won. Please try again.");
+  }
+  return { success: true };
+};
+
+export const updateGamesPlayed = async (username) => {
+  validation.doesExist(username);
+  username = validation.isProperString(username);
+
+  username = username.toLowerCase();
+
+  const user = getUserByUsername(username);
+
+  const userCollection = await users();
+  const updatedInfo = await userCollection.updateOne(
+    { _id: new ObjectId(user._id) },
+    { $set: { gamesWon: user.gamesPlayed + 1 } }
+  );
+  if (updatedInfo.modifiedCount === 0) {
+    throw new Error("Could not update the games played. Please try again.");
+  }
+  return { success: true };
+};
