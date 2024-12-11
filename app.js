@@ -89,7 +89,7 @@ app.use("/api", (req, res, next) => {
 import { Gamestate } from "./game/gamestateModel.js";
 import { Roomstate } from "./game/roomstate.js";
 
-export const games = { 1234: new Roomstate("1234") };
+export const games = {};
 
 // stores each socket id (user) and which room they are part of.
 // This makes it easier to remove a player from a lobby if they disconnect

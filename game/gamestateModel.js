@@ -1,4 +1,4 @@
-import { bananagrams_deck } from "./letterDeck.js";
+import { bananagrams_deck, dev_deck } from "./letterDeck.js";
 import { word_is_valid, construct_word } from "./helpers_gameLogic.js";
 import { all } from "axios";
 
