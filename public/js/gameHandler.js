@@ -42,7 +42,6 @@ socket.on("updateGamestate", (state) => {
         let player_words_str = "";
 
         const colors = [
-            "rgb(241, 213, 123)",
             "lightblue",
             "lightgreen",
             "lightsalmon",
