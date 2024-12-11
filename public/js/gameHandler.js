@@ -46,6 +46,10 @@ socket.on("updateGamestate", (state) => {
             "lightblue",
             "lightgreen",
             "lightsalmon",
+            "lavender",
+            "navajowhite",
+            "mediumaquamarine",
+            "tomato",
         ];
 
         let i = 0;
