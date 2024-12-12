@@ -5,6 +5,9 @@ let guess_form = document.getElementById("guessForm");
 let current_player = document.getElementById("currentPlayer");
 let updateRibbon = document.getElementById("updateRibbon");
 
+let gameIdDisplay = document.getElementById("gameIdDisplay");
+let connectedDisplay = document.getElementById("connected");
+
 const this_user = document.getElementById("username").value;
 
 draw_button.addEventListener("click", () => {
@@ -23,6 +26,9 @@ guess_form.addEventListener("submit", (event) => {
 });
 
 socket.on("updateGamestate", (state) => {
+    gameIdDisplay.hidden = true;
+    connectedDisplay.hidden = true;
+
     let gamestate = state.gamestate;
 
     if (gamestate.ongoing) {

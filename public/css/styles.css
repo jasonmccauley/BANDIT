@@ -15,7 +15,7 @@ body {
 }
 
 main {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background: #ffffff;
@@ -105,10 +105,26 @@ h1 {
 
 .tile:hover,
 .word:hover .tile {
-    transform: translateY(-5px); /* Makes it "pop" upward */
+    transform: translateY(-5px);
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
 
     cursor: none;
+}
+
+#gamePanels {
+    display: flex;
+}
+
+#leftPanel {
+    flex: 30%;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+
+#rightPanel {
+    flex: 70%;
+    padding: 10px;
+    background-color: #d0d0d0;
 }
 
 #greeting {
@@ -171,7 +187,7 @@ button:disabled:hover {
 
 #guessForm {
     display: inline-block;
-    width: 50%;
+    width: 100%;
 }
 
 #guessWord {
