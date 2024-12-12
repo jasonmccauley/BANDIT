@@ -4,7 +4,6 @@ let words_in_play = document.getElementById("wordsInPlay");
 let guess_form = document.getElementById("guessForm");
 let current_player = document.getElementById("currentPlayer");
 let updateRibbon = document.getElementById("updateRibbon");
-
 let gameIdDisplay = document.getElementById("gameIdDisplay");
 let connectedDisplay = document.getElementById("connected");
 
@@ -96,8 +95,11 @@ socket.on("updateGamestate", (state) => {
     document.getElementById("gameDiv").innerHTML = `
       <h4>GAME CONCLUDED!</h4>
       <h5>The winner is: <span>${gamestate.winner.name}</span></h5>
-
+      <button id="disbandRoom"> Go back to lobby select</button>
       `;
+    document.getElementById("disbandRoom").addEventListener("click", () => {
+      window.location.href = "/game";
+    });
   }
 });
 
