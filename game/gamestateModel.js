@@ -14,15 +14,15 @@ const shuffle = (deck) => {
 
 export class Gamestate {
     constructor(player_names, dictionary_name) {
-        this.deck = Gamestate.initialize_letter_deck(bananagrams_deck);
+        this.deck = Gamestate.initialize_letter_deck(dev_deck);
         this.dictionary = dictionary_name;
         this.table_tiles = [];
         this.players = shuffle(
             player_names.map((name) => new Gamestate.Player(name))
         );
         this.active_player = this.players[0];
+        this.winner = null;
         this.turn_number = 0;
-        this.ongoing = true;
         this.gameLog = [""];
     }
 
@@ -30,7 +30,6 @@ export class Gamestate {
         constructor(name) {
             this.name = name;
             this.words = [];
-            this.given_up = false;
         }
 
         /**
@@ -75,8 +74,9 @@ export class Gamestate {
      * @returns {string} The letter of the new tile.
      */
     draw = () => {
-        if (this.deck.length === 0) {
-            this.ongoing = false;
+        if (this.game_is_concluded() !== null) {
+            this.winner = this.game_is_concluded();
+            return;
         }
 
         let new_tile = this.deck.pop();
@@ -160,12 +160,19 @@ export class Gamestate {
     };
 
     /**
-     * @returns {boolean} Is the game concluded?
+     * @returns {Object} Is the game concluded? If so, return the winning player.
      */
     game_is_concluded = () => {
-        if (this.deck.length > 0) return false;
-        for (let player of this.players) if (!player.given_up) return false;
-        return true;
+        if (this.deck.length > 0) return null;
+        let winner = null;
+        let max_score = -1;
+        for (let player of this.players) {
+            if (player.score() > max_score) {
+                max_score = player.score();
+                winner = player;
+            }
+        }
+        return winner;
     };
 
     /**

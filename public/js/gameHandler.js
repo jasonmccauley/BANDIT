@@ -30,8 +30,9 @@ socket.on("updateGamestate", (state) => {
     connectedDisplay.hidden = true;
 
     let gamestate = state.gamestate;
-
-    if (gamestate.ongoing) {
+    console.log(state);
+    console.log(gamestate);
+    if (gamestate.winner === null) {
         let active_player_name = gamestate.active_player.name;
 
         current_player.innerHTML = active_player_name;
@@ -89,11 +90,7 @@ socket.on("updateGamestate", (state) => {
     } else {
         document.getElementById("gameDiv").innerHTML = `
         <h4>GAME CONCLUDED!</h4>
-        <h5>The winner is: <span>${
-            gamestate.players.reduce((max, current) => {
-                return current.score() > max.score() ? current : max;
-            }, gamestate.players[0]).name
-        }</span></h5>
+        <h5>The winner is: <span>${gamestate.winner.name}</span></h5>
         `;
     }
 });
