@@ -1,27 +1,33 @@
 <p id="roomFormError" class="error" hidden></p>
 <div id="gameDiv">
 
-    <p>Your game ID is {{gameId}}</p>
+    <p id="gameIdDisplay">Your game ID is {{gameId}}</p>
     <p id="connected">You are not connected</p>
     <input id="gameId" value={{gameId}} />
     <input id="username" value={{user.username}} />
 
-    <p id="current_player_header">Current Player:</p>
-    <p id="currentPlayer"></p>
+    <div id="gamePanels">
+        <div id="leftPanel" class="panel">
+            <p id="current_player_header">Current Player:</p>
+            <p id="currentPlayer"></p>
 
-    <p id="table_tiles_header">Table Tiles:</p>
-    <p id="tableTiles"></p>
+            <button id="drawTileButton">Draw</button>
 
-    <button id="drawTileButton">Draw</button>
+            <form id="guessForm">
+                <input type="text" id="guessWord" />
+                <input type="submit" id="guessSubmit" value="Grab!" />
+            </form>
+            <p id="updateRibbon"></p>
+        </div>
 
-    <p id="words_in_player_header">Words In Play:</p>
-    <p id="wordsInPlay"></p>
+        <div id="rightPanel" class="panel">
+            <p id="table_tiles_header">Table Tiles:</p>
+            <p id="tableTiles"></p>
 
-    <p id="updateRibbon"></p>
-    <form id="guessForm">
-        <input type="text" id="guessWord" />
-        <input type="submit" id="guessSubmit" value="Grab!" />
-    </form>
+            <p id="words_in_player_header">Words In Play:</p>
+            <p id="wordsInPlay"></p>
+        </div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/public/js/resyncRoom.js"></script>
