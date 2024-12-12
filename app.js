@@ -104,6 +104,16 @@ io.on("connection", (socket) => {
     console.log("data received:" + [passcode, username]);
 
     if (!games[passcode]) {
+      if (passcode.trim() === "") {
+        let roomCode = Math.floor(Math.random() * 1000000);
+        roomCode = roomCode.toString().padStart(7, "0");
+
+        while (games.hasOwnProperty(roomCode)) {
+          roomCode = Math.floor(Math.random() * 1000000);
+          roomCode = roomCode.toString().padStart(7, "0");
+        }
+        passcode = roomCode;
+      }
       games[passcode] = new Roomstate(passcode);
     }
     if (
