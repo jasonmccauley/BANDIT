@@ -199,7 +199,12 @@ io.on("connection", (socket) => {
 
     game.gamestate.draw();
     game.gamestate.pass();
-    io.to(passcode).emit("updateGamestate", game);
+
+    if (game.gamestate.winner === null) {
+      io.to(passcode).emit("updateGamestate", game);
+    } else {
+      socket.emit("endGame", game);
+    }
   });
 
   socket.on("guess", async (response) => {
@@ -217,6 +222,11 @@ io.on("connection", (socket) => {
     console.log(game.gamestate);
 
     io.to(passcode).emit("updateGamestate", { gamestate: game.gamestate });
+  });
+
+  socket.on("endGame", (passcode) => {
+    const game = games[passcode];
+    io.to(passcode).emit("updateGamestate", game);
   });
 
   socket.on("disconnect", () => {

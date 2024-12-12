@@ -22,7 +22,7 @@ function refreshRoomList() {
   $("#roomList").html("");
   let requestConfig = {
     method: "GET",
-    url: "http://localhost:3000/api/rooms",
+    url: `${window.location.protocol}//${window.location.host}/api/rooms`,
     headers: {
       ajax: "true",
     },

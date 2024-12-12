@@ -1,5 +1,8 @@
 import { Router } from "express";
 import { games } from "../app.js";
+import { usersData } from "../data/index.js";
+
+import xss from "xss";
 
 const router = Router();
 
@@ -25,4 +28,28 @@ router.route("/rooms").get(async (req, res) => {
   }
 });
 
+router.route("/updateStats").post(async (req, res) => {
+  try {
+    // sanitize req.body
+    for (let field in req.query) {
+      req.body[field] = xss(req.body[field]);
+    }
+
+    games[req.body.gameId].gamestate.updatedPlayers = true;
+    console.log(req.body.gameId);
+    let players = games[req.body.gameId].gamestate.get_all_players();
+    console.log(players);
+    players.forEach((player) => {
+      usersData.updateGamesPlayed(player);
+
+      if (player === xss(games[req.body.gameId].gamestate.winner.name)) {
+        usersData.updateGamesWon(player);
+      }
+    });
+
+    res.json({ success: true });
+  } catch (e) {
+    res.status(400).json({ error: e });
+  }
+});
 export default router;
