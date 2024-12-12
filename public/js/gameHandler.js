@@ -40,6 +40,12 @@ socket.on("updateGamestate", (state) => {
             gamestate.gameLog[gamestate.gameLog.length - 1];
 
         draw_button.disabled = !(this_user === gamestate.active_player.name);
+        draw_button.innerHTML =
+            gamestate.deck.length === 0
+                ? "END GAME!"
+                : this_user === gamestate.active_player.name
+                ? "Draw"
+                : "Waiting...";
 
         let tiles = [];
         for (const tile of gamestate.table_tiles) {
