@@ -417,3 +417,45 @@ nav {
 #roomList {
     list-style-type: none;
 }
+/* Dropdown container styles */
+#dictionaryDropdownContainer {
+    position: relative;
+}
+  
+  /* Label styles */
+#dictionaryDropdownContainer label {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+  
+  /* Dropdown styles */
+#dictionaryDropdown {
+    width: 100%;
+    max-width: 300px; /* Adjust to fit your layout */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+    appearance: none; /* Remove default arrow in some browsers */
+}
+  
+  /* Hover and focus styles */
+#dictionaryDropdown:hover,
+  #dictionaryDropdown:focus {
+    border-color: #007bff; /* Highlight border on hover/focus */
+    background-color: #fff;
+}
+  
+  /* Option styles */
+#dictionaryDropdown option {
+    padding: 10px;
+    font-size: 16px;
+}

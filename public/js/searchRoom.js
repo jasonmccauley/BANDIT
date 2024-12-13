@@ -43,11 +43,12 @@ function refreshRoomList() {
   });
 }
 
-let passcode, username, roomForm, startButton;
+let passcode, username, roomForm, startButton, dictionaryDropdown;
 let room_state;
 
 roomForm = document.getElementById("roomForm");
 startButton = document.getElementById("startButton");
+dictionaryDropdown = document.getElementById("dictionaryDropdownContainer");
 
 // checks if the roomForm is submitted
 roomForm.addEventListener("submit", (event) => {
@@ -72,7 +73,8 @@ startButton.addEventListener("click", () => {
     alert("Not enough players");
   } else {
     // 1 player emits this to server, then server emits it back to every player
-    socket.emit("startGame", room_state["passcode"]);
+    const selectedDictionary = document.getElementById("dictionaryDropdown").value;
+    socket.emit("startGame", {passcode: room_state["passcode"], dictionary: selectedDictionary});
   }
 });
 
@@ -108,6 +110,7 @@ socket.on("joinRoom", (response) => {
       if (game.connection_map[username].player_number === 1) {
         startButton.hidden = false;
         startButton.href = `/game/${game["passcode"]}`;
+        dictionaryDropdown.hidden = false;
       } else if (startButton.hidden) {
         document.getElementById("waitForHost").hidden = false;
       }
@@ -151,4 +154,18 @@ socket.on("refreshPlayerCount", (game) => {
 socket.on("error", (message) => {
   $("#roomFormError").html(`Error: ${message}`);
   $("#roomFormError").attr("hidden", false);
+});
+//For some reason, the startGame socket only sends to gameError and not error
+socket.on("gameError", (message) => {
+  console.log("Game error received from server:", message);
+  alert(`Error: ${message}`);
+  //$("#roomFormError").html(`Error: ${message}`);
+  //$("#roomFormError").show();
+  const dropdown = document.getElementById("dictionaryDropdown");
+  if (dropdown && dropdown.options.length > 0) {
+    dropdown.value = dropdown.options[0].value;
+  }
+
+  // Ensure the start button remains active for retry
+  document.getElementById("startButton").disabled = false;
 });

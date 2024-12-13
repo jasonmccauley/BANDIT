@@ -17,6 +17,14 @@
     <p id="roomStatus" hidden></p>
     <p id="playerNumber" hidden></p>
 
+    <div id="dictionaryDropdownContainer" hidden>
+      <label for="dictionaryDropdown">Select a dictionary:</label>
+      <select id="dictionaryDropdown">
+        {{#each dictionaries}}
+          <option value="{{this}}">{{this}}</option>
+        {{/each}}
+      </select>
+    </div>
     <button id="startButton" hidden> Start the game!</button>
     <p id="waitForHost" hidden>Waiting for the host to start the game</p>
 

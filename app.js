@@ -4,6 +4,7 @@ import exphbs from "express-handlebars";
 import session from "express-session";
 import http from "http";
 import { Server } from "socket.io";
+import { dictionaries } from "./config/mongoCollections.js";
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   // If the user posts to the server with a property called _method, rewrite the request's method
@@ -151,15 +152,23 @@ io.on("connection", (socket) => {
 
   // when the game is started, everyone in the lobby navigates to /game/:gameId
   //TODO: uses both "players" in gamestate and outside (Should standardize)
-  socket.on("startGame", async (passcode) => {
-    games[passcode] = {
+  socket.on("startGame", async ({ passcode, dictionary }) => {
+    const dictCollection = await dictionaries();
+    const thisDict = await dictCollection.findOne({ name: dictionary });
+    if (!thisDict) {
+      console.log("Dictionary not found: ", dictionary);
+      console.log("Emitting to socket ID:", socket.id);
+      socket.emit("gameError", "Selected dictionary not found.");
+    } else{
+      games[passcode] = {
       gamestate: new Gamestate(
         Object.keys(games[passcode].connection_map),
-        "Scrabble"
+        thisDict.name
       ),
       roomstate: games[passcode],
     };
     io.to(passcode).emit("navigateToGame", passcode);
+    }
   });
 
   // navigates all players to new page

@@ -1,10 +1,14 @@
 import { Router } from "express";
+import { dictionaries } from "../config/mongoCollections.js";
 
 const router = Router();
 
 router.route("/").get(async (req, res) => {
   try {
-    res.render("game/makeRoom", { user: req.session.user, game: true });
+    const dictCollection = await dictionaries();
+    const dictList = await dictCollection.find({}).toArray();
+    const dictionaryNames = dictList.map((dict) => dict.name);
+    res.render("game/makeRoom", { user: req.session.user, game: true, dictionaries: dictionaryNames});
   } catch (e) {
     res.status(500).json({ error: e });
   }
