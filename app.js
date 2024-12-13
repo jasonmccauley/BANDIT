@@ -88,6 +88,7 @@ app.use("/api", (req, res, next) => {
 // stores game state for all games
 import { Gamestate } from "./game/gamestateModel.js";
 import { Roomstate } from "./game/roomstate.js";
+import xss from "xss";
 
 export const games = {};
 
@@ -114,6 +115,8 @@ io.on("connection", (socket) => {
         }
         passcode = roomCode;
       }
+      games[passcode] = new Roomstate(passcode);
+    } else if (!io.sockets.adapter.rooms.get(passcode)) {
       games[passcode] = new Roomstate(passcode);
     }
     if (
@@ -178,6 +181,7 @@ io.on("connection", (socket) => {
       } else {
         // after page navigation, the room is deleted from the socket and needs to be recreated
         socket.join(passcode);
+        socketRooms[socket.id] = passcode;
         games[passcode].roomstate.connection_map[username].id = socket.id;
         io.to(passcode).emit("resync", passcode);
         io.to(passcode).emit("updateGamestate", games[passcode]);
@@ -199,7 +203,12 @@ io.on("connection", (socket) => {
 
     game.gamestate.draw();
     game.gamestate.pass();
-    io.to(passcode).emit("updateGamestate", game);
+
+    if (game.gamestate.winner === null) {
+      io.to(passcode).emit("updateGamestate", game);
+    } else {
+      socket.emit("endGame", game);
+    }
   });
 
   socket.on("guess", async (response) => {
@@ -219,8 +228,23 @@ io.on("connection", (socket) => {
     io.to(passcode).emit("updateGamestate", { gamestate: game.gamestate });
   });
 
+  socket.on("sendChatMessage", (chatMessage) => {
+    const { gameId, username, message } = chatMessage;
+    io.to(gameId).emit("newChatMessage", {
+      username: username,
+      message: message,
+      timestamp: new Date().toISOString(),
+    });
+  });
+
+  socket.on("endGame", (passcode) => {
+    const game = games[passcode];
+    io.to(passcode).emit("updateGamestate", game);
+  });
+
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);
+
     if (Object.keys(games).length > 0) {
       if (io.sockets.adapter.rooms.get(socketRooms[socket.id])) {
         games[socketRooms[socket.id]]["players"] = Array.from(

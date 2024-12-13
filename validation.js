@@ -94,3 +94,12 @@ export function isValidDate(date) {
   }
   return age;
 }
+
+export function checkMessage(message) {
+  if (!message) throw "Error: You must provide a message";
+  if (typeof message !== "string") throw "Error: Message must be a string";
+  if (message.length === 0) throw "Error: Message cannot be just spaces";
+  if (message.length > 255)
+    throw "Error: Message cannot be greater than 255 characters";
+  return message;
+}
