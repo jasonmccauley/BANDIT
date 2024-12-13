@@ -116,6 +116,8 @@ io.on("connection", (socket) => {
         passcode = roomCode;
       }
       games[passcode] = new Roomstate(passcode);
+    } else if (!io.sockets.adapter.rooms.get(passcode)) {
+      games[passcode] = new Roomstate(passcode);
     }
     if (
       games[passcode].hasOwnProperty("gamestate") &&
@@ -243,8 +245,6 @@ io.on("connection", (socket) => {
           "refreshPlayerCount",
           games[socketRooms[socket.id]]
         );
-      } else {
-        delete games[socketRooms[socket.id]];
       }
       delete socketRooms[socket.id];
     }
