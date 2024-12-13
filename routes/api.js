@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { games } from "../app.js";
 import { usersData } from "../data/index.js";
+import { checkMessage } from "../validation.js";
 
 import xss from "xss";
 
@@ -52,4 +53,20 @@ router.route("/updateStats").post(async (req, res) => {
     res.status(400).json({ error: e });
   }
 });
+
+router.route("/chat").post(async (req, res) => {
+  try {
+    // sanitize req.body
+    for (let field in req.body) {
+      req.body[field] = xss(req.body[field]);
+    }
+    const { message } = req.body;
+    message = checkMessage(message);
+  } catch (e) {
+    return res.status(400).json({ error: e.toString() });
+  }
+
+  res.status(200).json({ success: true, message: "Message validated" });
+});
+
 export default router;

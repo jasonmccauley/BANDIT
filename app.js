@@ -224,6 +224,15 @@ io.on("connection", (socket) => {
     io.to(passcode).emit("updateGamestate", { gamestate: game.gamestate });
   });
 
+  socket.on("sendChatMessage", (chatMessage) => {
+    const { gameId, username, message } = chatMessage;
+    io.to(gameId).emit("newChatMessage", {
+      username: username,
+      message: message,
+      timestamp: new Date().toISOString(),
+    });
+  });
+
   socket.on("endGame", (passcode) => {
     const game = games[passcode];
     io.to(passcode).emit("updateGamestate", game);
