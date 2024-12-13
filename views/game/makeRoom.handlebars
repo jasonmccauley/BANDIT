@@ -25,6 +25,14 @@
         {{/each}}
       </select>
     </div>
+    <div id="letterDeckDropdownContainer" hidden>
+      <label for="letterDeckDropdown">Select a letter deck:</label>
+      <select id="letterDeckDropdown">
+        {{#each letterDecks}}
+          <option value="{{this}}">{{this}}</option>
+        {{/each}}
+      </select>
+    </div>
     <button id="startButton" hidden> Start the game!</button>
     <p id="waitForHost" hidden>Waiting for the host to start the game</p>
 

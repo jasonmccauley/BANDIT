@@ -43,12 +43,13 @@ function refreshRoomList() {
   });
 }
 
-let passcode, username, roomForm, startButton, dictionaryDropdown;
+let passcode, username, roomForm, startButton, dictionaryDropdown,letterDecksDropdown;
 let room_state;
 
 roomForm = document.getElementById("roomForm");
 startButton = document.getElementById("startButton");
 dictionaryDropdown = document.getElementById("dictionaryDropdownContainer");
+letterDecksDropdown = document.getElementById("letterDeckDropdownContainer");
 
 // checks if the roomForm is submitted
 roomForm.addEventListener("submit", (event) => {
@@ -69,12 +70,19 @@ roomForm.addEventListener("submit", (event) => {
 
 // navigates all players at the same time to the game screen
 startButton.addEventListener("click", () => {
+  const selectedDictionary = document.getElementById("dictionaryDropdown").value;
+  const selectedLetterDeck = document.getElementById("letterDeckDropdown").value;
   if (Object.keys(room_state.connection_map).length < 2) {
     alert("Not enough players");
+  } else if(!selectedDictionary || !selectedLetterDeck){
+    alert("Please select both a dictionary and a letter deck.");
   } else {
     // 1 player emits this to server, then server emits it back to every player
-    const selectedDictionary = document.getElementById("dictionaryDropdown").value;
-    socket.emit("startGame", {passcode: room_state["passcode"], dictionary: selectedDictionary});
+    socket.emit("startGame", {
+      passcode: room_state["passcode"],
+      dictionary: selectedDictionary,
+      letterDeck: selectedLetterDeck
+    });
   }
 });
 
@@ -111,6 +119,7 @@ socket.on("joinRoom", (response) => {
         startButton.hidden = false;
         startButton.href = `/game/${game["passcode"]}`;
         dictionaryDropdown.hidden = false;
+        letterDecksDropdown.hidden = false;
       } else if (startButton.hidden) {
         document.getElementById("waitForHost").hidden = false;
       }
