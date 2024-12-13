@@ -60,7 +60,7 @@ router.route("/chat").post(async (req, res) => {
     for (let field in req.body) {
       req.body[field] = xss(req.body[field]);
     }
-    const { message } = req.body;
+    let { message } = req.body;
     message = checkMessage(message);
   } catch (e) {
     return res.status(400).json({ error: e.toString() });
