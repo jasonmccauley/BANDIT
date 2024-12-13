@@ -77,6 +77,8 @@ h1 {
 
     font-size: 50px;
     color: rgb(68, 44, 32);
+    background: url("wood-texture.avif") repeat, #4caf50;
+    background-blend-mode: multiply;
     background-color: rgb(241, 213, 123);
 
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -118,13 +120,22 @@ h1 {
 #leftPanel {
     flex: 30%;
     padding: 10px;
-    background-color: #f0f0f0;
+    background-color: f0f0f0;
+    box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.3),
+        inset -5px -5px 15px rgba(255, 255, 255, 0.5);
+    border-right: 2px solid rgba(77, 52, 0, 0.1);
+    background-image: url("wood-texture.avif");
 }
 
 #rightPanel {
     flex: 70%;
     padding: 10px;
-    background-color: #d0d0d0;
+    background: radial-gradient(circle, white, rgb(172, 172, 172));
+    box-shadow: inset 10px 10px 20px rgba(0, 0, 0, 0.5),
+        inset -10px -10px 20px rgba(255, 255, 255, 0.1);
+    border-left: 2px solid rgba(77, 52, 0, 0.1);
+    background-image: url("paper-texture.avif");
+    background-size: cover;
 }
 
 #greeting {
@@ -211,16 +222,23 @@ button:disabled:hover {
     height: 80px;
     box-sizing: border-box;
 
-    background-color: white;
-    border: 2px solid #f44336;
-    color: #f44336;
+    background: linear-gradient(to bottom, #ffcccc, #cc0000);
+    border: 1px solid #990000;
+    border-radius: 5px;
+    padding: 12px 24px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.5);
+    cursor: pointer;
     font-size: 28px;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #guessSubmit:hover {
-    background: #f44336;
-    color: white;
+    background: linear-gradient(to bottom, #ffdddd, #b30000);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4),
+        inset 1px 1px 3px rgba(255, 255, 255, 0.7);
     cursor: pointer;
 }
 
@@ -262,6 +280,30 @@ a:hover {
 #drawTileButton {
     width: 30%;
     margin-bottom: 30px;
+
+    background: linear-gradient(to bottom, #ccffcc, #009900);
+    border: 1px solid #006600;
+    border-radius: 5px;
+    padding: 12px 24px;
+    font-size: 16px;
+    color: #000;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+
+#drawTileButton:hover:enabled {
+    background: linear-gradient(to bottom, #ddffdd, #007700);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4),
+        inset 1px 1px 3px rgba(255, 255, 255, 0.7);
+}
+
+#drawTileButton:disabled {
+    background: linear-gradient(to bottom, #d4d4d4, #a1a1a1);
+    color: gray;
+    border: gray;
+    cursor: not-allowed;
 }
 
 /* Profile */
