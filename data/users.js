@@ -143,7 +143,7 @@ export const updateGamesWon = async (username) => {
 
   username = username.toLowerCase();
 
-  const user = getUserByUsername(username);
+  const user = await getUserByUsername(username);
 
   const userCollection = await users();
   const updatedInfo = await userCollection.updateOne(
@@ -162,12 +162,12 @@ export const updateGamesPlayed = async (username) => {
 
   username = username.toLowerCase();
 
-  const user = getUserByUsername(username);
+  const user = await getUserByUsername(username);
 
   const userCollection = await users();
   const updatedInfo = await userCollection.updateOne(
     { _id: new ObjectId(user._id) },
-    { $set: { gamesWon: user.gamesPlayed + 1 } }
+    { $set: { gamesPlayed: user.gamesPlayed + 1 } }
   );
   if (updatedInfo.modifiedCount === 0) {
     throw new Error("Could not update the games played. Please try again.");
