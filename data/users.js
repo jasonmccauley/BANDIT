@@ -9,6 +9,7 @@ const saltRounds = 10;
 export const createUser = async (username, password, birthday) => {
   validation.doesExist(username);
   username = validation.isProperString(username);
+  username = username.toLowerCase();
 
   validation.doesExist(password);
   password = validation.isProperString(password);
