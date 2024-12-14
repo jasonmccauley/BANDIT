@@ -130,6 +130,7 @@ h1 {
 #rightPanel {
     flex: 70%;
     padding: 10px;
+    padding-top: 30px;
     background: radial-gradient(circle, white, rgb(172, 172, 172));
     box-shadow: inset 10px 10px 20px rgba(0, 0, 0, 0.5),
         inset -10px -10px 20px rgba(255, 255, 255, 0.1);
@@ -150,6 +151,7 @@ h1 {
 .username_header {
     color: navy;
     font-weight: bold;
+    padding-bottom: 30px;
 }
 
 #currentPlayer {
@@ -160,12 +162,21 @@ h1 {
 #words_in_play_header,
 #current_player_header {
     margin-top: 30px;
+    color: rgb(61, 34, 0);
+    font-weight: bold;
+}
+
+#tableTiles {
+    margin-bottom: 30px;
 }
 
 #updateRibbon {
     display: inline-block;
     text-align: center;
     width: 75%;
+
+    font-size: 28px;
+    color: navy;
 }
 
 /* Buttons */
@@ -214,6 +225,9 @@ button:disabled:hover {
     box-sizing: border-box;
     font-size: 28px;
     font-family: monospace, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.3),
+        inset -5px -5px 15px rgba(255, 255, 255, 0.5);
+    border: 1px solid black;
 }
 
 #guessSubmit {
@@ -222,7 +236,7 @@ button:disabled:hover {
     height: 80px;
     box-sizing: border-box;
 
-    background: linear-gradient(to bottom, #ffcccc, #cc0000);
+    background: linear-gradient(to bottom, #d47b7b, #cc0000);
     border: 1px solid #990000;
     border-radius: 5px;
     padding: 12px 24px;
@@ -236,7 +250,7 @@ button:disabled:hover {
 }
 
 #guessSubmit:hover {
-    background: linear-gradient(to bottom, #ffdddd, #b30000);
+    background: linear-gradient(to bottom, #a86d6d, #b30000);
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4),
         inset 1px 1px 3px rgba(255, 255, 255, 0.7);
     cursor: pointer;
@@ -281,12 +295,13 @@ a:hover {
     width: 30%;
     margin-bottom: 30px;
 
-    background: linear-gradient(to bottom, #ccffcc, #009900);
+    background: linear-gradient(to bottom, #8bcb8b, #006d00);
     border: 1px solid #006600;
     border-radius: 5px;
     padding: 12px 24px;
     font-size: 16px;
-    color: #000;
+    color: white;
+    font-weight: bold;
     text-align: center;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3),
         inset 1px 1px 2px rgba(255, 255, 255, 0.5);
@@ -294,7 +309,7 @@ a:hover {
 }
 
 #drawTileButton:hover:enabled {
-    background: linear-gradient(to bottom, #ddffdd, #007700);
+    background: linear-gradient(to bottom, #6f9a6f, #007700);
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4),
         inset 1px 1px 3px rgba(255, 255, 255, 0.7);
 }
