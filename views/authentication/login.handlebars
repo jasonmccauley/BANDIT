@@ -3,7 +3,7 @@
     <p>Error: {{error}}</p>
   {{/if}}
   <form id="loginForm" action="/users/login" method="POST">
-    <label for="usernameInput">Enter your username</label>
+    <label for="usernameInput">Username:</label>
     <input
       id="usernameInput"
       name="usernameInput"
@@ -11,7 +11,7 @@
       required
     />
 
-    <label for="passwordInput">Enter your password</label>
+    <label for="passwordInput">Password:</label>
 
     <input
       id="passwordInput"
@@ -20,9 +20,10 @@
       placeholder="password"
       required
     />
-    <button type="button" onclick="unhideTextOne()">Show Password</button>
 
-    <input class="submit" type="submit" />
+    <input type="checkbox" id="showPassword" onclick="unhideTextOne()"/>
+
+    <input class="submit" type="submit" value="Log In"/>
   </form>
   <script src="/public/js/validateForm.js"></script>
 </div>
