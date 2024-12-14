@@ -102,6 +102,8 @@ io.on("connection", (socket) => {
   // this runs when client-side js does "socket.emit("joinRoom")
   socket.on("joinRoom", (response) => {
     let { passcode, username } = response;
+    passcode = xss(passcode);
+    username = xss(username);
     passcode = passcode.toString();
 
     console.log("data received:" + [passcode, username]);
@@ -161,19 +163,19 @@ io.on("connection", (socket) => {
       console.log("Dictionary not found: ", dictionary);
       console.log("Emitting to socket ID:", socket.id);
       socket.emit("gameError", "Selected dictionary not found.");
-    } else if(!selectedDeck){
+    } else if (!selectedDeck) {
       console.log("Letter deck not found: ", letterDeck);
       socket.emit("gameError", "Selected letter deck not found.");
-    } else{
+    } else {
       games[passcode] = {
-      gamestate: new Gamestate(
-        Object.keys(games[passcode].connection_map),
-        thisDict.name,
-        selectedDeck.deck
-      ),
-      roomstate: games[passcode],
-    };
-    io.to(passcode).emit("navigateToGame", passcode);
+        gamestate: new Gamestate(
+          Object.keys(games[passcode].connection_map),
+          thisDict.name,
+          selectedDeck.deck
+        ),
+        roomstate: games[passcode],
+      };
+      io.to(passcode).emit("navigateToGame", passcode);
     }
   });
 

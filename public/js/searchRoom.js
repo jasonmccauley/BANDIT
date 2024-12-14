@@ -43,7 +43,12 @@ function refreshRoomList() {
   });
 }
 
-let passcode, username, roomForm, startButton, dictionaryDropdown,letterDecksDropdown;
+let passcode,
+  username,
+  roomForm,
+  startButton,
+  dictionaryDropdown,
+  letterDecksDropdown;
 let room_state;
 
 roomForm = document.getElementById("roomForm");
@@ -56,8 +61,8 @@ roomForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   // currently this is the info we want to store
-  passcode = document.getElementById("passcode").value;
-  username = document.getElementById("username").value;
+  passcode = DOMPurify.sanitize(document.getElementById("passcode").value);
+  username = DOMPurify.sanitize(document.getElementById("username").value);
 
   console.log(passcode + " " + username);
 
@@ -70,18 +75,20 @@ roomForm.addEventListener("submit", (event) => {
 
 // navigates all players at the same time to the game screen
 startButton.addEventListener("click", () => {
-  const selectedDictionary = document.getElementById("dictionaryDropdown").value;
-  const selectedLetterDeck = document.getElementById("letterDeckDropdown").value;
+  const selectedDictionary =
+    document.getElementById("dictionaryDropdown").value;
+  const selectedLetterDeck =
+    document.getElementById("letterDeckDropdown").value;
   if (Object.keys(room_state.connection_map).length < 2) {
     alert("Not enough players");
-  } else if(!selectedDictionary || !selectedLetterDeck){
+  } else if (!selectedDictionary || !selectedLetterDeck) {
     alert("Please select both a dictionary and a letter deck.");
   } else {
     // 1 player emits this to server, then server emits it back to every player
     socket.emit("startGame", {
       passcode: room_state["passcode"],
       dictionary: selectedDictionary,
-      letterDeck: selectedLetterDeck
+      letterDeck: selectedLetterDeck,
     });
   }
 });
@@ -123,7 +130,8 @@ socket.on("joinRoom", (response) => {
       } else if (startButton.hidden) {
         document.getElementById("waitForHost").hidden = false;
       }
-
+      $("#roomCode").html(`Room code: ${game.passcode}`);
+      $("#roomCode").attr("hidden", false);
       $("#roomFormDiv").attr("hidden", true);
 
       window.isConnected = true;
