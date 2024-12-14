@@ -29,15 +29,15 @@ export const createUser = async (username, password, birthday) => {
     throw new Error("username is already taken");
   }
   let hash = await bcrypt.hash(password, saltRounds);
-  birthday = new Date(birthday);
+  birthday = new Date(`${birthday}T00:00:00Z`); // Explicitly set to UTC to avoid wrong date
 
   let newUser = {
     username: username.toLowerCase(),
     password: hash,
     bio: "No description",
     dateOfBirth: `${
-      birthday.getMonth() + 1
-    }/${birthday.getDate()}/${birthday.getFullYear()}`,
+      birthday.getUTCMonth() + 1
+    }/${birthday.getUTCDate()}/${birthday.getUTCFullYear()}`,
     gamesPlayed: 0,
     gamesWon: 0,
   };

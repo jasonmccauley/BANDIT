@@ -1,4 +1,4 @@
-import { bananagrams_deck, dev_deck } from "./letterDeck.js";
+import { letterDecks } from "./letterDeck.js";
 import { word_is_valid, construct_word } from "./helpers_gameLogic.js";
 import { all } from "axios";
 
@@ -13,8 +13,8 @@ const shuffle = (deck) => {
 };
 
 export class Gamestate {
-  constructor(player_names, dictionary_name) {
-    this.deck = Gamestate.initialize_letter_deck(dev_deck);
+  constructor(player_names, dictionary_name, letterDeck) {
+    this.deck = Gamestate.initialize_letter_deck(letterDeck);
     this.dictionary = dictionary_name;
     this.table_tiles = [];
     this.players = shuffle(

@@ -109,6 +109,7 @@ router
       }
 
       const { usernameInput, passwordInput, birthdayInput } = req.body;
+      //console.log("Birthday input before calling on data functions: " + birthdayInput);
 
       let createdUser = await usersData.createUser(
         usernameInput,
@@ -131,6 +132,24 @@ router
   .route("/:userId")
   .get(async (req, res) => {
     try {
+      // sanitize req.body
+      for (let field in req.body) {
+        req.body[field] = xss(req.body[field]);
+      }
+      /*
+      // Ensure user is logged in
+      if (!req.session.user) {
+        return res.redirect("/users/login"); // Redirect to login if not authenticated
+      }
+
+      // Restrict access to the user who owns the profile
+      if (req.session.user.id !== req.params.userId) {
+        return res.status(403).render("authentication/error", {
+          user: req.session.user,
+          error: "You are not authorized to view this profile.",
+        });
+      }
+      */
       let user = await usersData.getUserById(req.params.userId);
       delete user.password;
 

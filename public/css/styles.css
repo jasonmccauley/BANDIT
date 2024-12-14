@@ -477,3 +477,137 @@ nav {
 #roomList {
     list-style-type: none;
 }
+/* Dropdown container styles */
+#dictionaryDropdownContainer {
+    position: relative;
+}
+  
+  /* Label styles */
+#dictionaryDropdownContainer label {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+  
+  /* Dropdown styles */
+#dictionaryDropdown {
+    width: 100%;
+    max-width: 300px; /* Adjust to fit your layout */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+    appearance: none; /* Remove default arrow in some browsers */
+}
+  
+  /* Hover and focus styles */
+#dictionaryDropdown:hover,
+  #dictionaryDropdown:focus {
+    border-color: #007bff; /* Highlight border on hover/focus */
+    background-color: #fff;
+}
+  
+  /* Option styles */
+#dictionaryDropdown option {
+    padding: 10px;
+    font-size: 16px;
+}
+
+/* Dropdown container styles */
+#letterDeckDropdownContainer {
+  margin: 20px 0; /* Space between elements */
+}
+
+/* Label styles */
+#letterDeckDropdownContainer label {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Dropdown styles */
+#letterDeckDropdown {
+  width: 100%; /* Full width for responsiveness */
+  max-width: 300px; /* Maximum width for alignment */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s ease-in-out;
+  appearance: none; /* Remove default arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6H0z' fill='%23666'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center; /* Custom dropdown arrow */
+  background-size: 12px; /* Arrow size */
+}
+
+/* Hover and focus styles */
+#letterDeckDropdown:hover,
+#letterDeckDropdown:focus {
+  border-color: #007bff; /* Highlight border on hover/focus */
+  background-color: #fff;
+}
+
+/* Option styles */
+#letterDeckDropdown option {
+  padding: 10px;
+  font-size: 16px;
+}/* Dropdown container styles */
+#letterDeckDropdownContainer {
+    margin: 20px 0; /* Space between elements */
+  }
+  
+  /* Label styles */
+  #letterDeckDropdownContainer label {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+  }
+  
+  /* Dropdown styles */
+  #letterDeckDropdown {
+    width: 100%; /* Full width for responsiveness */
+    max-width: 300px; /* Maximum width for alignment */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+    appearance: none; /* Remove default arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6H0z' fill='%23666'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Custom dropdown arrow */
+    background-size: 12px; /* Arrow size */
+  }
+  
+  /* Hover and focus styles */
+  #letterDeckDropdown:hover,
+  #letterDeckDropdown:focus {
+    border-color: #007bff; /* Highlight border on hover/focus */
+    background-color: #fff;
+  }
+  
+  /* Option styles */
+  #letterDeckDropdown option {
+    padding: 10px;
+    font-size: 16px;
+  }
