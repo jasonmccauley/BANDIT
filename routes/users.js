@@ -132,6 +132,10 @@ router
   .route("/:userId")
   .get(async (req, res) => {
     try {
+      // sanitize req.body
+      for (let field in req.body) {
+        req.body[field] = xss(req.body[field]);
+      }
       /*
       // Ensure user is logged in
       if (!req.session.user) {
