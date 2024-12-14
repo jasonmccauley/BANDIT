@@ -11,9 +11,7 @@ router.route("/").get(async (req, res) => {
     for (let field in req.body) {
       req.body[field] = xss(req.body[field]);
     }
-    const dictCollection = await dictionaries();
-    const dictList = await dictCollection.find({}).toArray();
-    const dictionaryNames = dictList.map((dict) => dict.name);
+    const dictionaryNames = ["DWYL", "Scrabble", "antique", "Unix"];
     res.render("game/makeRoom", { user: req.session.user, game: true, dictionaries: dictionaryNames, letterDecks: letterDecks.map((deck)=>deck.name)});
   } catch (e) {
     res.status(500).json({ error: e });
