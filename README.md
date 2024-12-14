@@ -1,5 +1,15 @@
 # cs546-final-project
 
+Prerequisites to running project:
+
+1. Node 20.6.0 or newer must be installed
+2. Port 3000 must be available
+
+How to run the project:
+
+1. Install node modules `npm i`
+2. Start project `npm start`
+
 How to setup config.env (Must be on node version 20.6.0 or newer):
 
 1. Create file "config.env"
