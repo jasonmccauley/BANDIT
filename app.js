@@ -181,6 +181,8 @@ io.on("connection", (socket) => {
 
   // navigates all players to new page
   socket.on("navigateToGame", (passcode) => {
+    passcode = xss(passcode);
+
     if (games.hasOwnProperty(passcode)) {
       io.to(passcode).emit("navigateToGame", passcode);
     }
@@ -188,7 +190,10 @@ io.on("connection", (socket) => {
 
   // needed to resync players after something like a page change
   socket.on("resync", (response) => {
-    const { passcode, username } = response;
+    let { passcode, username } = response;
+    passcode = xss(passcode);
+    username = xss(username);
+
     console.log("attempting a resync");
 
     if (games.hasOwnProperty(passcode)) {
@@ -209,6 +214,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("draw", (passcode) => {
+    passcode = xss(passcode);
+
     const game = games[passcode];
 
     // check to see if it's your turn
@@ -229,7 +236,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("guess", async (response) => {
-    const { guess, passcode } = response;
+    let { guess, passcode } = response;
+    guess = xss(guess);
+    passcode = xss(passcode);
     const game = games[passcode];
 
     let this_room_player = game.roomstate.get_player_by_id(socket.id);
@@ -246,7 +255,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendChatMessage", (chatMessage) => {
-    const { gameId, username, message } = chatMessage;
+    let { gameId, username, message } = chatMessage;
+    gameId = xss(gameId);
+    username = xss(username);
+    message = xss(message);
+
     io.to(gameId).emit("newChatMessage", {
       username: username,
       message: message,
@@ -255,6 +268,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("endGame", (passcode) => {
+    passcode = xss(passcode);
+
     const game = games[passcode];
     io.to(passcode).emit("updateGamestate", game);
   });

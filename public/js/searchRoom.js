@@ -117,12 +117,17 @@ socket.on("joinRoom", (response) => {
       }/${game["room_size"]}`;
 
       let playerNumber = document.getElementById("playerNumber");
-      playerNumber.hidden = false;
+
+      /* 
       playerNumber.innerHTML = `You are player number ${
         game.connection_map[$("#username").val()].player_number
-      }`;
+      }`; 
+      playerNumber.hidden = false;
+      */
 
       if (game.connection_map[username].player_number === 1) {
+        playerNumber.innerHTML = `You are the host`;
+        playerNumber.hidden = false;
         startButton.hidden = false;
         startButton.href = `/game/${game["passcode"]}`;
         dictionaryDropdown.hidden = false;
