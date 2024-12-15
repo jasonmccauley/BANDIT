@@ -2,6 +2,7 @@ $("#chatForm").submit((event) => {
   event.preventDefault();
   $("#chatError").text("");
   const message = $("#messageInput").val().trim();
+  $("#messageInput").val("");
   const messageError = checkMessage(message);
   if (messageError) {
     $("#chatError").text(messageError);
