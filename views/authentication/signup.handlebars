@@ -28,8 +28,10 @@
       placeholder="reenter password"
       required
     />
-    <input type="checkbox" id="showPassword" onclick="unhideText()"/>
-    <label for="showPassword">Show Password</label>
+    <div class="checkboxContainer">
+      <input type="checkbox" id="showPassword" onclick="unhideText()" />
+      <label for="showPassword" class="checkboxLabel">Show Password</label>
+    </div>
 
     <input id="birthdayInput" name="birthdayInput" type="date" required />
 

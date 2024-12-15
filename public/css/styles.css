@@ -257,7 +257,7 @@ button:disabled:hover {
     cursor: pointer;
 }
 
-/* Form Container */
+
 .formContainer {
     background: #f9f9f9;
     padding: 20px;
@@ -267,7 +267,7 @@ button:disabled:hover {
     max-width: 400px;
 }
 
-/* Input Styling */
+
 input {
     width: 100%;
     padding: 10px;
@@ -323,11 +323,11 @@ a:hover {
     width: 35%;
 }
 
-/* Profile */
+
 div p {
     margin: 10px 0;
 }
-/* Navbar Flex Layout */
+
 nav {
     display: flex;
     justify-content: space-between;
@@ -405,7 +405,6 @@ nav {
     color: #555;
 }
 
-/* Edit Profile Form */
 .edit-profile-form {
     margin-top: 20px;
     background: #f9f9f9;
@@ -476,12 +475,12 @@ nav {
 #roomList {
     list-style-type: none;
 }
-/* Dropdown container styles */
+
 #dictionaryDropdownContainer {
     position: relative;
 }
 
-/* Label styles */
+
 #dictionaryDropdownContainer label {
     font-family: Arial, sans-serif;
     font-size: 16px;
@@ -491,10 +490,10 @@ nav {
     display: block;
 }
 
-/* Dropdown styles */
+
 #dictionaryDropdown {
     width: 100%;
-    max-width: 300px; /* Adjust to fit your layout */
+    max-width: 300px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -503,28 +502,25 @@ nav {
     color: #333;
     outline: none;
     transition: border-color 0.2s ease-in-out;
-    appearance: none; /* Remove default arrow in some browsers */
+    appearance: none;
 }
 
-/* Hover and focus styles */
+
 #dictionaryDropdown:hover,
 #dictionaryDropdown:focus {
-    border-color: #007bff; /* Highlight border on hover/focus */
+    border-color: #007bff;
     background-color: #fff;
 }
 
-/* Option styles */
 #dictionaryDropdown option {
     padding: 10px;
     font-size: 16px;
 }
 
-/* Dropdown container styles */
 #letterDeckDropdownContainer {
-    margin: 20px 0; /* Space between elements */
+    margin: 20px 0;
 }
 
-/* Label styles */
 #letterDeckDropdownContainer label {
     font-family: Arial, sans-serif;
     font-size: 16px;
@@ -534,10 +530,9 @@ nav {
     display: block;
 }
 
-/* Dropdown styles */
 #letterDeckDropdown {
-    width: 100%; /* Full width for responsiveness */
-    max-width: 300px; /* Maximum width for alignment */
+    width: 100%;
+    max-width: 300px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -546,30 +541,28 @@ nav {
     color: #333;
     outline: none;
     transition: border-color 0.2s ease-in-out;
-    appearance: none; /* Remove default arrow */
+    appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6H0z' fill='%23666'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 10px center; /* Custom dropdown arrow */
-    background-size: 12px; /* Arrow size */
+    background-position: right 10px center;
+    background-size: 12px;
 }
 
-/* Hover and focus styles */
 #letterDeckDropdown:hover,
 #letterDeckDropdown:focus {
-    border-color: #007bff; /* Highlight border on hover/focus */
+    border-color: #007bff;
     background-color: #fff;
 }
 
-/* Option styles */
+
 #letterDeckDropdown option {
     padding: 10px;
     font-size: 16px;
-} /* Dropdown container styles */
+}
 #letterDeckDropdownContainer {
-    margin: 20px 0; /* Space between elements */
+    margin: 20px 0;
 }
 
-/* Label styles */
 #letterDeckDropdownContainer label {
     font-family: Arial, sans-serif;
     font-size: 16px;
@@ -579,10 +572,9 @@ nav {
     display: block;
 }
 
-/* Dropdown styles */
 #letterDeckDropdown {
-    width: 100%; /* Full width for responsiveness */
-    max-width: 300px; /* Maximum width for alignment */
+    width: 100%;
+    max-width: 300px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -591,22 +583,30 @@ nav {
     color: #333;
     outline: none;
     transition: border-color 0.2s ease-in-out;
-    appearance: none; /* Remove default arrow */
+    appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6H0z' fill='%23666'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 10px center; /* Custom dropdown arrow */
-    background-size: 12px; /* Arrow size */
+    background-position: right 10px center;
+    background-size: 12px;
 }
 
-/* Hover and focus styles */
 #letterDeckDropdown:hover,
 #letterDeckDropdown:focus {
-    border-color: #007bff; /* Highlight border on hover/focus */
+    border-color: #007bff;
     background-color: #fff;
 }
 
-/* Option styles */
 #letterDeckDropdown option {
     padding: 10px;
     font-size: 16px;
+}
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.checkboxLabel {
+  white-space: nowrap;
+  font-size: 16px;
 }
