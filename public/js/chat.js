@@ -1,6 +1,20 @@
+let lastMessageTime = 0;
+const MESSAGE_COOLDOWN = 3000;
+
 $("#chatForm").submit((event) => {
   event.preventDefault();
   $("#chatError").text("");
+  const currentTime = Date.now();
+  if (currentTime - lastMessageTime < MESSAGE_COOLDOWN) {
+    const remainingTime = Math.ceil(
+      (MESSAGE_COOLDOWN - (currentTime - lastMessageTime)) / 1000
+    );
+    $("#chatError").text(
+      `Error: Please wait ${remainingTime} seconds before sending another message`
+    );
+    return;
+  }
+
   const message = $("#messageInput").val().trim();
   $("#messageInput").val("");
   const messageError = checkMessage(message);
@@ -28,6 +42,8 @@ $("#chatForm").submit((event) => {
       message: sanitizedMessage,
     });
   });
+
+  lastMessageTime = currentTime;
 });
 
 socket.on("newChatMessage", function (chatMessage) {
