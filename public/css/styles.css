@@ -257,6 +257,11 @@ button:disabled:hover {
     cursor: pointer;
 }
 
+#guessSubmit:active {
+    transform: translateY(2px) translateX(2px);
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.4),
+        inset 0px 0px 0px rgba(255, 255, 255, 0.7);
+}
 
 .formContainer {
     background: #f9f9f9;
@@ -266,7 +271,6 @@ button:disabled:hover {
     margin: 20px auto;
     max-width: 400px;
 }
-
 
 input {
     width: 100%;
@@ -293,7 +297,7 @@ a:hover {
 }
 
 #drawTileButton {
-    width: 30%;
+    width: 38%;
     margin-bottom: 30px;
 
     background: linear-gradient(to bottom, #8bcb8b, #006d00);
@@ -320,9 +324,15 @@ a:hover {
     color: gray;
     border: gray;
     cursor: not-allowed;
-    width: 35%;
+    width: 38%;
 }
 
+#drawTileButton:active,
+#drawTileButton:disabled {
+    transform: translateY(2px) translateX(2px);
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.4),
+        inset 0px 0px 0px rgba(255, 255, 255, 0.7);
+}
 
 div p {
     margin: 10px 0;
@@ -480,7 +490,6 @@ nav {
     position: relative;
 }
 
-
 #dictionaryDropdownContainer label {
     font-family: Arial, sans-serif;
     font-size: 16px;
@@ -489,7 +498,6 @@ nav {
     margin-bottom: 8px;
     display: block;
 }
-
 
 #dictionaryDropdown {
     width: 100%;
@@ -504,7 +512,6 @@ nav {
     transition: border-color 0.2s ease-in-out;
     appearance: none;
 }
-
 
 #dictionaryDropdown:hover,
 #dictionaryDropdown:focus {
@@ -554,7 +561,6 @@ nav {
     background-color: #fff;
 }
 
-
 #letterDeckDropdown option {
     padding: 10px;
     font-size: 16px;
@@ -601,12 +607,12 @@ nav {
     font-size: 16px;
 }
 .checkboxContainer {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .checkboxLabel {
-  white-space: nowrap;
-  font-size: 16px;
+    white-space: nowrap;
+    font-size: 16px;
 }
