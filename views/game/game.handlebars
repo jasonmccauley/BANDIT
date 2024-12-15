@@ -6,6 +6,8 @@
     <input id="gameId" value={{gameId}} />
     <input id="username" value={{user.username}} />
 
+    <div id="gameFinishedDisplay"></div>
+
     <div id="gamePanels">
         <div id="leftPanel" class="panel">
             <p id="current_player_header">Current Player:</p>
@@ -14,7 +16,7 @@
             <button id="drawTileButton">Draw</button>
 
             <form id="guessForm">
-                <input type="text" id="guessWord" autocomplete="off"/>
+                <input type="text" id="guessWord" autocomplete="off" />
                 <input type="submit" id="guessSubmit" value="Grab!" />
             </form>
             <p id="updateRibbon"></p>
