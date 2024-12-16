@@ -618,12 +618,20 @@ nav {
 }
 
 #chatDiv {
+  position: absolute;
+  top: 15%; /* higher initial position */
+  right: 20px;
+  width: 320px;
+  max-height: 450px; /* ensuring enough space for all elements */
+  z-index: 1000;
   background: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  max-width: 100%;
-  margin-top: 20px;
+  padding: 15px;
+  overflow: hidden;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
 }
 
 #messagesDiv {
@@ -636,6 +644,9 @@ nav {
   background-color: #ffffff;
   box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.1),
     inset -5px -5px 15px rgba(255, 255, 255, 0.5);
+  word-wrap: break-word;
+  text-align: left;
+  cursor: grab;
 }
 
 .chat-message {
@@ -645,7 +656,8 @@ nav {
   line-height: 1.4;
   color: #333;
   word-wrap: break-word;
-  text-align: left;
+  text-align: justify;
+  hyphens: auto;
 }
 
 #chat-username {

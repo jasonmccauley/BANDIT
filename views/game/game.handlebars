@@ -38,10 +38,16 @@
 <div id="chatDiv">
   <div id="messagesDiv"></div>
   <form id="chatForm" action="javascript:void(0)">
-    <input type="text" id="messageInput" placeholder="Type your message..." />
+    <input
+      type="text"
+      id="messageInput"
+      placeholder="Type your message..."
+      autocomplete="off"
+    />
     <button type="submit">Send</button>
   </form>
   <p id="chatError" class="error"></p>
 
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
   <script src="/public/js/chat.js"></script>
 </div>

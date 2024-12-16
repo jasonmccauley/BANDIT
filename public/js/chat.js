@@ -46,6 +46,11 @@ $("#chatForm").submit((event) => {
   lastMessageTime = currentTime;
 });
 
+$("#chatDiv").draggable({
+  containment: "window", // keeps div within the window
+  scroll: false, // cannot scroll while dragging
+});
+
 socket.on("newChatMessage", function (chatMessage) {
   const $messagesDiv = $("#messagesDiv");
   const messageElement = $(`<p class="chat-message">
