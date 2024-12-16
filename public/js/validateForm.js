@@ -31,7 +31,10 @@ function checkPassword(strVal) {
 }
 
 function isValidDate(date) {
-  if (isNaN(new Date(date))) throw new Error("invalid date");
+  if (isNaN(new Date(date))){
+    //console.log("date entered" + date);
+    throw new Error("invalid date");
+  } 
 
   hasValidLength(date, 10);
 

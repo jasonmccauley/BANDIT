@@ -57,13 +57,33 @@ export function isValidObjectId(id) {
   return id.trim();
 }
 
+//check for valid password reqs
+export function checkPassword(strVal) {
+  if (!strVal) throw new Error(`You must supply a Password!`);
+  if (!/\d/.test(strVal)) throw new Error(`Password must have at least one number!`);
+  if (!/[A-Z]/.test(strVal)) throw new Error(`Password must have at least one uppercase letter!`);
+  if (!/[^a-zA-Z0-9]/.test(strVal)) throw new Error(`Password must have at least one special character!`);
+  if (strVal.length < 8) throw new Error(`Password must be between 5 and 10 characters.`);
+  return strVal;
+}
+
 // check if date is valid
 export function isValidDate(date) {
-  if (isNaN(new Date(date))) throw new Error("invalid date");
+  if (isNaN(new Date(date))){
+    //console.log("date entered" + date);
+    throw new Error("invalid date");
+  } 
 
   hasValidLength(date, 10);
 
-  let inputDate = new Date(date);
+  //let inputDate = new Date(date);
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateRegex.test(date)) {
+    //console.log("invalid date format: " + date);
+    throw new Error("Invalid date format. Expected MM/DD/YYYY.");
+  }
+  const [year, month, day] = date.split('-').map(Number);
+  const inputDate = new Date(Date.UTC(year, month - 1, day));
 
   /*
   yyyy-mm-dd
@@ -74,21 +94,22 @@ export function isValidDate(date) {
   */
 
   if (
-    inputDate.getFullYear() !== parseInt(date.substring(0, 4)) ||
-    inputDate.getMonth() + 1 !== parseInt(date.substring(5, 7)) ||
-    inputDate.getUTCDate() !== parseInt(date.substring(8))
+    inputDate.getUTCFullYear() !== year ||
+    inputDate.getUTCMonth() + 1 !== month ||
+    inputDate.getUTCDate() !== day
   ) {
+    //console.log("date entered" + inputDate);
     throw new Error("invalid date");
   }
 
   let currentDate = new Date();
 
-  let age = currentDate.getFullYear() - inputDate.getFullYear();
-  let monthDifference = currentDate.getMonth() - inputDate.getMonth();
+  let age = currentDate.getFullYear() - year;
+  let monthDifference = currentDate.getMonth() - month -1;
 
   if (
     monthDifference < 0 ||
-    (monthDifference === 0 && currentDate.getDate() < inputDate.getUTCDate())
+    (monthDifference === 0 && currentDate.getDate() < day)
   ) {
     age--;
   }

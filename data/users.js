@@ -13,6 +13,7 @@ export const createUser = async (username, password, birthday) => {
 
   validation.doesExist(password);
   password = validation.isProperString(password);
+  password = validation.checkPassword(password);
 
   validation.doesExist(birthday);
   birthday = validation.isProperString(birthday);
