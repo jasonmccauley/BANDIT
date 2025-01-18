@@ -1,4 +1,4 @@
-# cs546-final-project
+# BANDIT
 
 Prerequisites to running project:
 
