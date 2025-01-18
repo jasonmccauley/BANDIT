@@ -1,4 +1,5 @@
 # BANDIT
+<img width="1407" alt="Screenshot of BANDIT homepage" src="https://github.com/jasonmccauley/BANDIT/blob/main/public/images/demo.jpg">
 
 Prerequisites to running project:
 
